@@ -7,7 +7,7 @@ import javax.persistence.Id;
 @Entity
 public class Book {
     @Id
-    private String Genre;
+    private String genre;
     @Column(nullable = false)
     private String autor;
     @Column(nullable = false)
@@ -25,16 +25,28 @@ public class Book {
     @Column(nullable = false)
     private String isbn;
 
-    Book() {
+    public Book() {
 
+    }
+
+    public Book(String genre, String autor, String image, String title, String subtitle, String publisher, String year, Integer pages, String isbn) {
+this.genre = genre;
+        this.autor = autor;
+        this.image = image;
+        this.title = title;
+        this.subtitle = subtitle;
+        this.publisher = publisher;
+        this.year = year;
+        this.pages = pages;
+        this.isbn = isbn;
     }
 
     public String getGenre() {
-        return Genre;
+        return genre;
     }
 
     public void setGenre(String genre) {
-        Genre = genre;
+        genre = genre;
     }
 
     public String getAutor() {
