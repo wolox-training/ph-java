@@ -23,6 +23,13 @@ import wolox.training.repositories.BookRepository;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
+
+    /**
+     * This method show a greeting on the browser
+     * @param name : name of param GET in the URL
+     * @param model: Class uses for print the value on the screen
+     * @return
+     */
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
         model.addAttribute("name", name);
@@ -33,28 +40,51 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    /**
+     * Method that find all the information of one entity.
+     * @return
+     */
     @GetMapping
     public Iterable findAll() {
         return bookRepository.findAll();
     }
 
+    /**
+     * Method that find a registry by booktittle
+     * @param bookTitle : Param send with the tittle book
+     * @return
+     */
     @GetMapping("/title/{bookTitle}")
     public List findByTitle(@PathVariable String bookTitle) {
         return bookRepository.findByTitle(bookTitle);
     }
 
+    /**
+     * Method that find information by primary key
+     * @param id : primary key of one table
+     * @return
+     */
     @GetMapping("/{id}")
     public Optional<Book> findOne(@PathVariable Long id) {
         return bookRepository.findById(id);
                 //.orElseThrow(ActorNotFoundException::new);
     }
 
+    /**
+     * Method that save the fields from an entity.
+     * @param book object of entity book
+     * @return
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book) {
         return bookRepository.save(book);
     }
 
+    /**
+     * Method that delete a registry of one entity by primary key
+     * @param id :primary key of one table
+     */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id);
@@ -62,6 +92,12 @@ public class BookController {
         bookRepository.deleteById(id);
     }
 
+    /**
+     * method that update a registry by primary key
+     * @param book : object of entity book
+     * @param id : primary key of one table
+     * @return
+     */
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
         if (book.getId() != id) {
