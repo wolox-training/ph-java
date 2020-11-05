@@ -19,7 +19,7 @@ public class Book {
     private String genre;
     @NotNull
     @Column(nullable = false)
-    private String autor;
+    private String author;
     @NotNull
     @Column(nullable = false)
     private String image;
@@ -46,9 +46,9 @@ public class Book {
 
     }
 
-    public Book(String genre, String autor, String image, String title, String subtitle, String publisher, String year, Integer pages, String isbn) {
+    public Book(String genre, String author, String image, String title, String subtitle, String publisher, String year, Integer pages, String isbn) {
 this.genre = genre;
-        this.autor = autor;
+        this.author = author;
         this.image = image;
         this.title = title;
         this.subtitle = subtitle;
@@ -66,12 +66,12 @@ this.genre = genre;
         genre = genre;
     }
 
-    public String getAutor() {
-        return autor;
+    public String getAuthor() {
+        return author;
     }
 
-    public void setAutor(String autor) {
-        this.autor = autor;
+    public void setAuthor(String author) {
+        this.author = author;
     }
 
     public String getImage() {
