@@ -1,28 +1,43 @@
 package wolox.training.models;
 
+import com.sun.istack.NotNull;
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
 public class Book {
+
     @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private long id;
+    @Column
     private String genre;
+    @NotNull
     @Column(nullable = false)
     private String autor;
+    @NotNull
     @Column(nullable = false)
     private String image;
+    @NotNull
     @Column(nullable = false)
     private String title;
+    @NotNull
     @Column(nullable = false)
     private String subtitle;
+    @NotNull
     @Column(nullable = false)
     private String publisher;
+    @NotNull
     @Column(nullable = false)
     private String year;
+    @NotNull
     @Column(nullable = false)
     private Integer pages;
-    @Column(nullable = false)
+    @NotNull
+    @Column(nullable = false, unique =true)
     private String isbn;
 
     public Book() {
@@ -111,5 +126,13 @@ this.genre = genre;
 
     public void setIsbn(String isbn) {
         this.isbn = isbn;
+    }
+
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
     }
 }
