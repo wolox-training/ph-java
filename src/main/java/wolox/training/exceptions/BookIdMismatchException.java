@@ -1,9 +1,8 @@
 package wolox.training.exceptions;
 
-public class BookIdMismatchException extends RuntimeException{
+import org.springframework.http.HttpStatus;
+import org.springframework.web.bind.annotation.ResponseStatus;
 
-    public BookIdMismatchException (String errorMessage) {
-        super(errorMessage);
-        {
-        }}
+@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Book not found")
+public class BookIdMismatchException extends RuntimeException{
 }
