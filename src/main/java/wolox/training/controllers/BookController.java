@@ -1,7 +1,5 @@
 package wolox.training.controllers;
 
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,10 +14,12 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import wolox.training.constants.ErrorConstants;
+import wolox.training.exceptions.BookIdMismatchException;
+import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
 
-@Controller
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
@@ -28,7 +28,7 @@ public class BookController {
      * This method show a greeting on the browser
      * @param name : name of param GET in the URL
      * @param model: Class uses for print the value on the screen
-     * @return
+     * @return : the greetinng with the name you put in the URL
      */
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
@@ -42,7 +42,7 @@ public class BookController {
 
     /**
      * Method that find all the information of one entity.
-     * @return
+     * @return: a collection type list with the information of book table
      */
     @GetMapping
     public Iterable findAll() {
@@ -52,28 +52,30 @@ public class BookController {
     /**
      * Method that find a registry by booktittle
      * @param bookTitle : Param send with the tittle book
-     * @return
+     * @return the information of book with the tittle you send.
      */
     @GetMapping("/title/{bookTitle}")
-    public List findByTitle(@PathVariable String bookTitle) {
-        return bookRepository.findByTitle(bookTitle);
+    public Book findByTitle(@PathVariable String bookTitle) throws BookNotFoundException{
+        return bookRepository.findByTitle(bookTitle).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_TITTLE));
+
     }
 
     /**
      * Method that find information by primary key
      * @param id : primary key of one table
-     * @return
+     * @return: the information of with with id you send.
      */
     @GetMapping("/{id}")
-    public Optional<Book> findOne(@PathVariable Long id) {
-        return bookRepository.findById(id);
-                //.orElseThrow(ActorNotFoundException::new);
+    public Book findOne(@PathVariable Long id) throws BookNotFoundException{
+        return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_ID));
     }
 
     /**
      * Method that save the fields from an entity.
      * @param book object of entity book
-     * @return
+     * @return: null(message of success or warning )
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -87,8 +89,8 @@ public class BookController {
      */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        bookRepository.findById(id);
-                //.orElseThrow(ActorNotFoundException::new);
+        bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_ID));
         bookRepository.deleteById(id);
     }
 
@@ -96,15 +98,15 @@ public class BookController {
      * method that update a registry by primary key
      * @param book : object of entity book
      * @param id : primary key of one table
-     * @return
+     * @return null(message of success or warning )
      */
     @PutMapping("/{id}")
-    public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
+    public Book updateBook(@RequestBody Book book, @PathVariable Long id) throws BookIdMismatchException {
         if (book.getId() != id) {
-            //throw new ActorNotFoundException();
+            throw new BookIdMismatchException();
         }
-        bookRepository.findById(id);
-              //  .orElseThrow(ActorNotFoundException::new);
+        bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_ID));
         return bookRepository.save(book);
     }
 }

@@ -7,11 +7,11 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.server.ResponseStatusException;
 
-@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Actor Not Found")
-public class ActorNotFoundException extends Exception {
+@ResponseStatus(code = HttpStatus.NOT_FOUND, reason = "Book Not Found")
+public class BookNotFoundException extends RuntimeException {
 
     private static final long serialVersionUID = 1L;
-        public ActorNotFoundException(String errorMessage) {
+        public BookNotFoundException(String errorMessage) {
             super(errorMessage);
         }
 }
