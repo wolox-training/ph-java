@@ -1,7 +1,5 @@
 package wolox.training.controllers;
 
-import java.util.List;
-import java.util.Optional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
@@ -16,6 +14,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
+import wolox.training.constants.ErrorConstants;
+import wolox.training.exceptions.BookIdMismatchException;
+import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
 
@@ -55,8 +56,10 @@ public class BookController {
      * @return
      */
     @GetMapping("/title/{bookTitle}")
-    public List findByTitle(@PathVariable String bookTitle) {
-        return bookRepository.findByTitle(bookTitle);
+    public Book findByTitle(@PathVariable String bookTitle) throws BookNotFoundException{
+        return bookRepository.findByTitle(bookTitle).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_TITTLE));
+
     }
 
     /**
@@ -65,9 +68,9 @@ public class BookController {
      * @return
      */
     @GetMapping("/{id}")
-    public Optional<Book> findOne(@PathVariable Long id) {
-        return bookRepository.findById(id);
-                //.orElseThrow(ActorNotFoundException::new);
+    public Book findOne(@PathVariable Long id) throws BookNotFoundException{
+        return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_ID));
     }
 
     /**
@@ -87,8 +90,8 @@ public class BookController {
      */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
-        bookRepository.findById(id);
-                //.orElseThrow(ActorNotFoundException::new);
+        bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_ID));
         bookRepository.deleteById(id);
     }
 
@@ -99,12 +102,11 @@ public class BookController {
      * @return
      */
     @PutMapping("/{id}")
-    public Book updateBook(@RequestBody Book book, @PathVariable Long id) {
+    public Book updateBook(@RequestBody Book book, @PathVariable Long id) throws BookIdMismatchException {
         if (book.getId() != id) {
-            //throw new ActorNotFoundException();
+            throw new BookIdMismatchException(ErrorConstants.NOT_MATCH_UPDATE);
         }
         bookRepository.findById(id);
-              //  .orElseThrow(ActorNotFoundException::new);
         return bookRepository.save(book);
     }
 }
