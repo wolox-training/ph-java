@@ -28,7 +28,7 @@ public class BookController {
      * This method show a greeting on the browser
      * @param name : name of param GET in the URL
      * @param model: Class uses for print the value on the screen
-     * @return
+     * @return : the greetinng with the name you put in the URL
      */
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
@@ -42,7 +42,7 @@ public class BookController {
 
     /**
      * Method that find all the information of one entity.
-     * @return
+     * @return: a collection type list with the information of book table
      */
     @GetMapping
     public Iterable findAll() {
@@ -52,7 +52,7 @@ public class BookController {
     /**
      * Method that find a registry by booktittle
      * @param bookTitle : Param send with the tittle book
-     * @return
+     * @return the information of book with the tittle you send.
      */
     @GetMapping("/title/{bookTitle}")
     public Book findByTitle(@PathVariable String bookTitle) throws BookNotFoundException{
@@ -64,7 +64,7 @@ public class BookController {
     /**
      * Method that find information by primary key
      * @param id : primary key of one table
-     * @return
+     * @return: the information of with with id you send.
      */
     @GetMapping("/{id}")
     public Book findOne(@PathVariable Long id) throws BookNotFoundException{
@@ -75,7 +75,7 @@ public class BookController {
     /**
      * Method that save the fields from an entity.
      * @param book object of entity book
-     * @return
+     * @return: null(message of success or warning )
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
@@ -98,7 +98,7 @@ public class BookController {
      * method that update a registry by primary key
      * @param book : object of entity book
      * @param id : primary key of one table
-     * @return
+     * @return null(message of success or warning )
      */
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) throws BookIdMismatchException {
