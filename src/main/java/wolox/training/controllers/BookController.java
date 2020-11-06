@@ -20,7 +20,6 @@ import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
 
-@Controller
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
@@ -68,9 +67,10 @@ public class BookController {
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) throws BookIdMismatchException {
         if (book.getId() != id) {
-            throw new BookIdMismatchException(ErrorConstants.NOT_MATCH_UPDATE);
+            throw new BookIdMismatchException();
         }
-        bookRepository.findById(id);
+        bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_ID));
         return bookRepository.save(book);
     }
 }
