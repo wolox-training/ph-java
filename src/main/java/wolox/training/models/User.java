@@ -17,7 +17,9 @@ import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
 import wolox.training.exceptions.BookAlreadyOwnedException;
-
+/**
+ * Entity  for table User
+ */
 @Entity
 @Table(name = "users")
 public class User {
@@ -35,6 +37,9 @@ public class User {
     @Column(nullable = false)
     private LocalDate birthdate;
 
+    /**
+     * Field for relation user-book
+     */
     @OneToMany(mappedBy = "user_id")
     private List<Book> books;
 
