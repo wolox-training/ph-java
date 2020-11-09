@@ -1,19 +1,22 @@
 package wolox.training.models;
 
 import com.sun.istack.NotNull;
+import java.util.ArrayList;
+import java.util.List;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.ManyToOne;
+import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
+import javax.persistence.Table;
 
 /**
  * Entity  for table Book
  */
 @Entity
+@Table(name = "books")
 public class Book {
 
     @Id
@@ -53,16 +56,11 @@ public class Book {
     @Column(nullable = false, unique =true)
     private String isbn;
 
-    @ManyToOne
-    @JoinColumn(name = "user_id")
-    private User user;
-
-    public Book() {
-
-    }
+    @ManyToMany(mappedBy = "books")
+    private List <User> users = new ArrayList<>();
 
     public Book(String genre, String author, String image, String title, String subtitle, String publisher, String year, Integer pages, String isbn) {
-this.genre = genre;
+        this.genre = genre;
         this.author = author;
         this.image = image;
         this.title = title;

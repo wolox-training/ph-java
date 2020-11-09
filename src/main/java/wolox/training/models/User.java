@@ -5,6 +5,7 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
@@ -12,10 +13,12 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import wolox.training.constants.ErrorConstants;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 /**
  * Entity  for table User
@@ -40,7 +43,7 @@ public class User {
     /**
      * Field for relation user-book
      */
-    @OneToMany(mappedBy = "user_id")
+    @ManyToMany(cascade = {CascadeType.REFRESH, CascadeType.MERGE})
     private List<Book> books;
 
     public User() {
@@ -49,10 +52,6 @@ public class User {
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 
     public String getUsername() {
@@ -83,13 +82,9 @@ public class User {
         return (List<Book>) Collections.unmodifiableList(books);
     }
 
-    public void setBooks(List<Book> books) {
-        books = books;
-    }
-
     public void addBook(Book book) throws BookAlreadyOwnedException {
         if (books.contains(book)) {
-            throw new BookAlreadyOwnedException();
+            throw new BookAlreadyOwnedException(ErrorConstants.EXIST_BOOK);
         }
         books.add(book);
     }
