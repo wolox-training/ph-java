@@ -90,6 +90,10 @@ public class User {
     }
 
     public void removeBook(Book book) {
-        books.remove(book);
+        if(!books.contains(book)){
+            throw new BookAlreadyOwnedException(ErrorConstants.NOT_EXIST_BOOK_DELETE);
+        }else{
+            books.remove(book);
+        }
     }
 }
