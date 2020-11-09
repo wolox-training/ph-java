@@ -23,6 +23,13 @@ import wolox.training.repositories.BookRepository;
 @RestController
 @RequestMapping("/api/books")
 public class BookController {
+
+    /**
+     * This method show a greeting on the browser
+     * @param name : name of param GET in the URL
+     * @param model: Class uses for print the value on the screen
+     * @return : the greetinng with the name you put in the URL
+     */
     @GetMapping("/greeting")
     public String greeting(@RequestParam(name="name", required=false, defaultValue="World") String name, Model model) {
         model.addAttribute("name", name);
@@ -33,11 +40,20 @@ public class BookController {
     @Autowired
     private BookRepository bookRepository;
 
+    /**
+     * Method that find all the information of one entity.
+     * @return: a collection type list with the information of book table
+     */
     @GetMapping
     public Iterable findAll() {
         return bookRepository.findAll();
     }
 
+    /**
+     * Method that find a registry by booktittle
+     * @param bookTitle : Param send with the tittle book
+     * @return the information of book with the tittle you send.
+     */
     @GetMapping("/title/{bookTitle}")
     public Book findByTitle(@PathVariable String bookTitle) throws BookNotFoundException{
         return bookRepository.findByTitle(bookTitle).orElseThrow(() -> new BookNotFoundException(
@@ -45,18 +61,32 @@ public class BookController {
 
     }
 
+    /**
+     * Method that find information by primary key
+     * @param id : primary key of one table
+     * @return: the information of with with id you send.
+     */
     @GetMapping("/{id}")
     public Book findOne(@PathVariable Long id) throws BookNotFoundException{
         return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
                 ErrorConstants.NOT_EXIST_ID));
     }
 
+    /**
+     * Method that save the fields from an entity.
+     * @param book object of entity book
+     * @return: null(message of success or warning )
+     */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
     public Book create(@RequestBody Book book) {
         return bookRepository.save(book);
     }
 
+    /**
+     * Method that delete a registry of one entity by primary key
+     * @param id :primary key of one table
+     */
     @DeleteMapping("/{id}")
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
@@ -64,6 +94,12 @@ public class BookController {
         bookRepository.deleteById(id);
     }
 
+    /**
+     * method that update a registry by primary key
+     * @param book : object of entity book
+     * @param id : primary key of one table
+     * @return null(message of success or warning )
+     */
     @PutMapping("/{id}")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) throws BookIdMismatchException {
         if (book.getId() != id) {

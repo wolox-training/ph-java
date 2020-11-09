@@ -8,6 +8,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.SequenceGenerator;
 
+/**
+ * Entity  for table Book
+ */
 @Entity
 public class Book {
 
@@ -20,6 +23,9 @@ public class Book {
     @NotNull
     @Column(nullable = false)
     private String author;
+    /**
+     * Field that save visual design of a book
+     */
     @NotNull
     @Column(nullable = false)
     private String image;
@@ -38,6 +44,9 @@ public class Book {
     @NotNull
     @Column(nullable = false)
     private Integer pages;
+    /**
+     * Identity unique for a book include for the same tittle
+     */
     @NotNull
     @Column(nullable = false, unique =true)
     private String isbn;
