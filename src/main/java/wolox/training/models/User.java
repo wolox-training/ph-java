@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.google.common.base.Preconditions;
 import com.sun.istack.NotNull;
 import java.time.LocalDate;
 import java.util.ArrayList;
@@ -59,7 +60,8 @@ public class User {
     }
 
     public void setUsername(String username) {
-        username = username;
+        Preconditions.checkNotNull(username);
+        this.username = username;
     }
 
     public String getName() {
@@ -67,7 +69,8 @@ public class User {
     }
 
     public void setName(String name) {
-        name = name;
+        Preconditions.checkNotNull(name);
+        this.name = name;
     }
 
     public LocalDate getBirthdate() {
@@ -75,7 +78,8 @@ public class User {
     }
 
     public void setBirthdate(LocalDate birthdate) {
-        birthdate = birthdate;
+        Preconditions.checkNotNull(birthdate);
+        this.birthdate = birthdate;
     }
 
     public List<Book> getBooks() {

@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.google.common.base.Preconditions;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
@@ -78,7 +79,8 @@ public class Book {
     }
 
     public void setGenre(String genre) {
-        genre = genre;
+        Preconditions.checkNotNull(genre);
+        this.genre = genre;
     }
 
     public String getAuthor() {
@@ -86,6 +88,7 @@ public class Book {
     }
 
     public void setAuthor(String author) {
+        Preconditions.checkNotNull(author);
         this.author = author;
     }
 
@@ -94,6 +97,7 @@ public class Book {
     }
 
     public void setImage(String image) {
+        Preconditions.checkNotNull(image);
         this.image = image;
     }
 
@@ -102,6 +106,7 @@ public class Book {
     }
 
     public void setTitle(String title) {
+        Preconditions.checkNotNull(title);
         this.title = title;
     }
 
@@ -110,6 +115,7 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
+        Preconditions.checkNotNull(subtitle);
         this.subtitle = subtitle;
     }
 
@@ -118,6 +124,7 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
+        Preconditions.checkNotNull(publisher);
         this.publisher = publisher;
     }
 
@@ -126,6 +133,7 @@ public class Book {
     }
 
     public void setYear(String year) {
+        Preconditions.checkNotNull(year);
         this.year = year;
     }
 
@@ -134,6 +142,7 @@ public class Book {
     }
 
     public void setPages(Integer pages) {
+        Preconditions.checkNotNull(pages);
         this.pages = pages;
     }
 
@@ -142,6 +151,7 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
+        Preconditions.checkNotNull(isbn);
         this.isbn = isbn;
     }
 
@@ -150,6 +160,7 @@ public class Book {
     }
 
     public void setId(long id) {
+        Preconditions.checkNotNull(id);
         this.id = id;
     }
 }
