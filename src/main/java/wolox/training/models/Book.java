@@ -1,6 +1,7 @@
 package wolox.training.models;
 
 import com.sun.istack.NotNull;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -24,6 +25,7 @@ public class Book {
     @SequenceGenerator(name = "BOOK_SEQ", sequenceName ="BOOK_SEQ")
     private long id;
     @Column
+    @ApiModelProperty(notes ="The book genre: could be horror, comedy,drama,etc.")
     private String genre;
     @NotNull
     @Column(nullable = false)
