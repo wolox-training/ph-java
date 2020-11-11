@@ -95,7 +95,7 @@ public class UserController {
      * @return null(message of success or warning )
      * @throws UserNotFoundException
      */
-    
+
     @PostMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)
     public User addBook(@RequestBody Book book)
