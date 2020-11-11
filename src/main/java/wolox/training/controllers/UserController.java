@@ -1,5 +1,7 @@
 package wolox.training.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -26,6 +28,7 @@ import wolox.training.repositories.UserRepository;
  */
 @RestController
 @RequestMapping("/api/user")
+@Api
 public class UserController {
 
     @Autowired
@@ -36,6 +39,7 @@ public class UserController {
      * @return: a collection type list with the information of user table
      */
     @GetMapping
+    @ApiOperation(value ="Find all users", notes ="Return all  users")
     public Iterable findAll() {
         return userRepository.findAll();
     }
@@ -46,6 +50,7 @@ public class UserController {
      * @return: the information of with  id you send.
      */
     @GetMapping("/{id}")
+    @ApiOperation(value ="Find a user", notes ="Find a user by id")
     public User findOne(@PathVariable Long id) throws UserNotFoundException {
         return userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
                 ErrorConstants.NOT_EXIST_USER_ID));
@@ -58,6 +63,7 @@ public class UserController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value ="Create a user", notes ="Create  a new user")
     public User create(@RequestBody User user) {
         return userRepository.save(user);
     }
@@ -67,6 +73,7 @@ public class UserController {
      * @param id :primary key of one table
      */
     @DeleteMapping("/{id}")
+    @ApiOperation(value ="Remove a book", notes ="Remove a book by id")
     public void delete(@PathVariable Long id) {
         userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
                 ErrorConstants.NOT_EXIST_USER_ID));
@@ -80,6 +87,7 @@ public class UserController {
      * @return null(message of success or warning )
      */
     @PutMapping("/{id}")
+    @ApiOperation(value ="Update a user", notes ="Update a user by id")
     public User updateBook(@RequestBody User user, @PathVariable Long id) throws UserIdMismatchException {
         if (user.getId() != id) {
             throw new UserIdMismatchException();
@@ -97,6 +105,7 @@ public class UserController {
      */
     @PutMapping("/{id}/books")
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value ="Create a book", notes ="Create  a new book by user")
     public User addBook(@PathVariable Long id, @RequestBody Book book)
             throws UserNotFoundException {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
@@ -113,6 +122,7 @@ public class UserController {
      * @throws UserNotFoundException
      */
     @DeleteMapping("/{id}/books")
+    @ApiOperation(value ="Remove a book", notes ="Remove  a book by user")
     public User deleteBook(@PathVariable Long id, @RequestBody Book book)
             throws UserNotFoundException {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(

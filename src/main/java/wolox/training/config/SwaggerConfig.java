@@ -29,10 +29,10 @@ public class SwaggerConfig {
 
     private ApiInfo apiEndPointsInfo() {
         return new ApiInfoBuilder().title("Recipes REST API")
-                .description("REST API that retrieves recipes from a list of ingredientes")
+                .description("REST API that retrieves recipes from a list of ingredients")
                 .contact(
-                        new Contact("Leonel Costa", "https://github.com/naipes0787",
-                                "mimail@servidordemail.com")
+                        new Contact("Pablo Hincapie", "https://github.com/pablohincapie",
+                                "pabloandres.hincapie@wolox.co")
                 )
                 .license("Apache 2.0")
                 .licenseUrl("http://www.apache.org/licences/LICENSE-2.0.html")

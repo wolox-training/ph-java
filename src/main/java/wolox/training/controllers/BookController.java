@@ -51,7 +51,8 @@ public class BookController {
      * Method that find all the information of one entity.
      * @return: a collection type list with the information of book table
      */
-    @GetMapping()
+    @GetMapping
+    @ApiOperation(value ="Find all book", notes ="Return all  books")
     public Iterable findAll() {
         return bookRepository.findAll();
     }
@@ -62,6 +63,7 @@ public class BookController {
      * @return the information of book with the tittle you send.
      */
     @GetMapping("/title/{bookTitle}")
+    @ApiOperation(value ="Find a book", notes ="Find a book by Tittle")
     public Book findByTitle(@PathVariable String bookTitle) throws BookNotFoundException{
         return bookRepository.findByTitle(bookTitle).orElseThrow(() -> new BookNotFoundException(
                 ErrorConstants.NOT_EXIST_TITTLE));
@@ -93,6 +95,7 @@ public class BookController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value ="Create a book", notes ="Create  a new book")
     public Book create(@RequestBody Book book) {
         return bookRepository.save(book);
     }
@@ -102,6 +105,7 @@ public class BookController {
      * @param id :primary key of one table
      */
     @DeleteMapping("/{id}")
+    @ApiOperation(value ="Remove a book", notes ="Remove a book by id")
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
                 ErrorConstants.NOT_EXIST_ID));
@@ -115,6 +119,7 @@ public class BookController {
      * @return null(message of success or warning )
      */
     @PutMapping("/{id}")
+    @ApiOperation(value ="Update a book", notes ="Update a book by id")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) throws BookIdMismatchException {
         if (book.getId() != id) {
             throw new BookIdMismatchException();
