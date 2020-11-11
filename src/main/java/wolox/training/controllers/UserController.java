@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 import wolox.training.constants.ErrorConstants;
@@ -66,8 +67,8 @@ public class UserController {
      * Method that delete a registry of one entity by primary key
      * @param id :primary key of one table
      */
-    @DeleteMapping("/{id}")
-    public void delete(@PathVariable Long id) {
+    @DeleteMapping()
+    public void delete(@RequestParam("id") Long id) {
         userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
                 ErrorConstants.NOT_EXIST_USER_ID));
         userRepository.deleteById(id);
@@ -90,16 +91,16 @@ public class UserController {
     }
     /**
      * method that save a registry a book
-     * @param id: user_id from user table
      * @param book: object book to save
      * @return null(message of success or warning )
      * @throws UserNotFoundException
      */
-    @PutMapping("/{id}/books")
+    
+    @PostMapping("/books")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addBook(@PathVariable Long id, @RequestBody Book book)
+    public User addBook(@RequestBody Book book)
             throws UserNotFoundException {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
+        User user = userRepository.findById(book.getId()).orElseThrow(() -> new UserNotFoundException(
                 ErrorConstants.NOT_EXIST_USER_ID));
         user.addBook(book);
         return userRepository.save(user);
@@ -112,7 +113,7 @@ public class UserController {
      * @return
      * @throws UserNotFoundException
      */
-    @DeleteMapping("/{id}/books")
+    @PutMapping("/{id}/booksUpdate")
     public User deleteBook(@PathVariable Long id, @RequestBody Book book)
             throws UserNotFoundException {
         User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
