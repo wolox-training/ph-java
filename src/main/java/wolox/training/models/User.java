@@ -60,7 +60,8 @@ public class User {
     }
 
     public void setUsername(String username) {
-        Preconditions.checkNotNull(username);
+        Preconditions.checkNotNull(username, ErrorConstants.NULL_FIELD_USERNAME);
+        Preconditions.checkArgument(!username.isEmpty(), ErrorConstants.EMPTY_FIELD_USERNAME);
         this.username = username;
     }
 
@@ -69,7 +70,8 @@ public class User {
     }
 
     public void setName(String name) {
-        Preconditions.checkNotNull(name);
+        Preconditions.checkNotNull(name, ErrorConstants.NULL_FIELD_NAME);
+        Preconditions.checkArgument(!name.isEmpty(), ErrorConstants.EMPTY_FIELD_NAME);
         this.name = name;
     }
 
@@ -78,7 +80,8 @@ public class User {
     }
 
     public void setBirthdate(LocalDate birthdate) {
-        Preconditions.checkNotNull(birthdate);
+        Preconditions.checkNotNull(birthdate, ErrorConstants.NULL_FIELD_BIRTHDAY);
+        Preconditions.checkArgument(!birthdate.isAfter(LocalDate.now()),ErrorConstants.NOW_FIELD_BIRTHDAY);
         this.birthdate = birthdate;
     }
 
