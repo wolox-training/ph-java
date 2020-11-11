@@ -37,7 +37,8 @@ public final class ErrorConstants {
     public static final String EMPTY_FIELD_NAME ="The name field cannot be empty.";
     public static final String NULL_FIELD_ISBN ="The isbn field cannot be null.";
     public static final String EMPTY_FIELD_ISBN ="The isbn field cannot be empty.";
-    public static final String ISNUMERIC_FIELD_ISBN ="The isbn field should be a number.";
+    public static final String NUMERIC_FIELD_ISBN ="The isbn field should be a number.";
+    public static final String NUMERIC_FIELD_YEAR ="The year field should be a number.";
     private ErrorConstants() {
 
     }
