@@ -2,6 +2,8 @@ package wolox.training.models;
 
 import com.google.common.base.Preconditions;
 import com.sun.istack.NotNull;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -26,19 +28,24 @@ import wolox.training.exceptions.BookAlreadyOwnedException;
  */
 @Entity
 @Table(name = "users")
+@ApiModel("Model User")
 public class User {
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
     @SequenceGenerator(name = "USER_SEQ", sequenceName ="USER_SEQ")
+    @ApiModelProperty(notes ="The user id")
     private long id;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The user's username", required = true)
     private String username;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The user's name", required = true)
     private String name;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The user's birthdate", required = true)
     private LocalDate birthdate;
 
     /**
