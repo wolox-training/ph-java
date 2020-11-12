@@ -32,6 +32,9 @@ public class UserController {
     @Autowired
     private UserRepository userRepository;
 
+    @Autowired
+    private BookRepository bookRepository;
+
     /**
      * Method that find all the information of user entity
      * @return: a collection type list with the information of user table
@@ -91,33 +94,38 @@ public class UserController {
     }
     /**
      * method that save a registry a book
-     * @param book: object book to save
+     * @param book_id: book_id from book table
+     * @param user_id: user_id from user table
      * @return null(message of success or warning )
      * @throws UserNotFoundException
      */
-
-    @PostMapping("/books")
+    @PutMapping("/{user_id}/add-book/{book_id}")
     @ResponseStatus(HttpStatus.CREATED)
-    public User addBook(@RequestBody Book book)
+    public User addBook(@PathVariable Long user_id, @PathVariable Long book_id)
             throws UserNotFoundException {
-        User user = userRepository.findById(book.getId()).orElseThrow(() -> new UserNotFoundException(
+        User user = userRepository.findById(user_id).orElseThrow(() -> new UserNotFoundException(
                 ErrorConstants.NOT_EXIST_USER_ID));
+        Book book = bookRepository.findById(book_id).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_ID));
         user.addBook(book);
         return userRepository.save(user);
     }
 
     /**
      * method removes a registry from book table
-     * @param id: user_id from user table
-     * @param book: object book to remove
+     * @param book_id: book_id from book table
+     * @param user_id: user_id from user table
      * @return
      * @throws UserNotFoundException
      */
-    @PutMapping("/{id}/booksUpdate")
-    public User deleteBook(@PathVariable Long id, @RequestBody Book book)
+
+    @PutMapping("/{user_id}/remove-book/{book_id}")
+    public User deleteBook(@PathVariable Long user_id, @PathVariable Long book_id)
             throws UserNotFoundException {
-        User user = userRepository.findById(id).orElseThrow(() -> new UserNotFoundException(
+        User user = userRepository.findById(user_id).orElseThrow(() -> new UserNotFoundException(
                 ErrorConstants.NOT_EXIST_USER_ID));
+        Book book = bookRepository.findById(book_id).orElseThrow(() -> new BookNotFoundException(
+                ErrorConstants.NOT_EXIST_ID));
         user.removeBook(book);
         return userRepository.save(user);
     }
