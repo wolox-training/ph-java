@@ -1,7 +1,13 @@
 package wolox.training.controllers;
 
+import io.swagger.annotations.Api;
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiParam;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -22,6 +28,7 @@ import wolox.training.repositories.BookRepository;
 
 @RestController
 @RequestMapping("/api/books")
+@Api
 public class BookController {
 
     /**
@@ -45,6 +52,7 @@ public class BookController {
      * @return: a collection type list with the information of book table
      */
     @GetMapping
+    @ApiOperation(value ="Find all book", notes ="Return all  books")
     public Iterable findAll() {
         return bookRepository.findAll();
     }
@@ -55,19 +63,27 @@ public class BookController {
      * @return the information of book with the tittle you send.
      */
     @GetMapping("/title/{bookTitle}")
+    @ApiOperation(value ="Find a book", notes ="Find a book by Tittle")
     public Book findByTitle(@PathVariable String bookTitle) throws BookNotFoundException{
         return bookRepository.findByTitle(bookTitle).orElseThrow(() -> new BookNotFoundException(
                 ErrorConstants.NOT_EXIST_TITTLE));
 
     }
-
+    @GetMapping("/{id}")
+    @ApiOperation(value = "Giving an id, return the book", response = Book.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Succesfully retrived book"),
+            @ApiResponse(code = 401, message = "You are not authorized to view the resource"),
+            @ApiResponse(code = 403, message = "Accessing th resource you were trying to reach is forbidden"),
+            @ApiResponse(code = 404, message = "The resource you were trying to reach is not found")
+    })
     /**
      * Method that find information by primary key
      * @param id : primary key of one table
      * @return: the information of with with id you send.
      */
-    @GetMapping("/{id}")
-    public Book findOne(@PathVariable Long id) throws BookNotFoundException{
+
+    public Book findOne(@ApiParam(value = "id to find the book", required  = true) @PathVariable Long id) throws BookNotFoundException{
         return bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
                 ErrorConstants.NOT_EXIST_ID));
     }
@@ -79,6 +95,7 @@ public class BookController {
      */
     @PostMapping
     @ResponseStatus(HttpStatus.CREATED)
+    @ApiOperation(value ="Create a book", notes ="Create  a new book")
     public Book create(@RequestBody Book book) {
         return bookRepository.save(book);
     }
@@ -88,6 +105,7 @@ public class BookController {
      * @param id :primary key of one table
      */
     @DeleteMapping("/{id}")
+    @ApiOperation(value ="Remove a book", notes ="Remove a book by id")
     public void delete(@PathVariable Long id) {
         bookRepository.findById(id).orElseThrow(() -> new BookNotFoundException(
                 ErrorConstants.NOT_EXIST_ID));
@@ -101,6 +119,7 @@ public class BookController {
      * @return null(message of success or warning )
      */
     @PutMapping("/{id}")
+    @ApiOperation(value ="Update a book", notes ="Update a book by id")
     public Book updateBook(@RequestBody Book book, @PathVariable Long id) throws BookIdMismatchException {
         if (book.getId() != id) {
             throw new BookIdMismatchException();

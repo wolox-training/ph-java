@@ -1,6 +1,8 @@
 package wolox.training.models;
 
 import com.sun.istack.NotNull;
+import io.swagger.annotations.ApiModel;
+import io.swagger.annotations.ApiModelProperty;
 import java.util.ArrayList;
 import java.util.List;
 import javax.persistence.Column;
@@ -17,43 +19,54 @@ import javax.persistence.Table;
  */
 @Entity
 @Table(name = "books")
+@ApiModel("Model Book")
 public class Book {
 
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "BOOK_SEQ")
     @SequenceGenerator(name = "BOOK_SEQ", sequenceName ="BOOK_SEQ")
+    @ApiModelProperty(notes ="The book id")
     private long id;
     @Column
+    @ApiModelProperty(notes ="The book genre: could be horror, comedy,drama,etc.")
     private String genre;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The book's author", required = true)
     private String author;
     /**
      * Field that save visual design of a book
      */
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The book's image", required = true)
     private String image;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The book's title", required = true)
     private String title;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The book's subtitle", required = true)
     private String subtitle;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The book's publisher", required = true)
     private String publisher;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The book's year", required = true)
     private String year;
     @NotNull
     @Column(nullable = false)
+    @ApiModelProperty(notes ="The book's pages", required = true)
     private Integer pages;
     /**
      * Identity unique for a book include for the same tittle
      */
     @NotNull
     @Column(nullable = false, unique =true)
+    @ApiModelProperty(notes ="The book's isbn", required = true)
     private String isbn;
 
     @ManyToMany(mappedBy = "books")
