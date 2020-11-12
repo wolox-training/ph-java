@@ -1,5 +1,6 @@
 package wolox.training.models;
 
+import com.google.common.base.Preconditions;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -66,7 +67,9 @@ public class User {
     }
 
     public void setUsername(String username) {
-        username = username;
+        Preconditions.checkNotNull(username, ErrorConstants.NULL_FIELD_USERNAME);
+        Preconditions.checkArgument(!username.isEmpty(), ErrorConstants.EMPTY_FIELD_USERNAME);
+        this.username = username;
     }
 
     public String getName() {
@@ -74,7 +77,9 @@ public class User {
     }
 
     public void setName(String name) {
-        name = name;
+        Preconditions.checkNotNull(name, ErrorConstants.NULL_FIELD_NAME);
+        Preconditions.checkArgument(!name.isEmpty(), ErrorConstants.EMPTY_FIELD_NAME);
+        this.name = name;
     }
 
     public LocalDate getBirthdate() {
@@ -82,7 +87,9 @@ public class User {
     }
 
     public void setBirthdate(LocalDate birthdate) {
-        birthdate = birthdate;
+        Preconditions.checkNotNull(birthdate, ErrorConstants.NULL_FIELD_BIRTHDAY);
+        Preconditions.checkArgument(!birthdate.isAfter(LocalDate.now()),ErrorConstants.NOW_FIELD_BIRTHDAY);
+        this.birthdate = birthdate;
     }
 
     public List<Book> getBooks() {

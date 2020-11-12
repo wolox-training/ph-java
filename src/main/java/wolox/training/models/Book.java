@@ -1,5 +1,9 @@
 package wolox.training.models;
 
+import static com.google.common.base.Preconditions.checkArgument;
+
+import org.apache.commons.lang3.StringUtils;
+import com.google.common.base.Preconditions;
 import com.sun.istack.NotNull;
 import io.swagger.annotations.ApiModel;
 import io.swagger.annotations.ApiModelProperty;
@@ -13,6 +17,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import wolox.training.constants.ErrorConstants;
 
 /**
  * Entity  for table Book
@@ -89,7 +94,9 @@ public class Book {
     }
 
     public void setGenre(String genre) {
-        genre = genre;
+        Preconditions.checkNotNull(genre, ErrorConstants.NULL_FIELD_GENRE);
+        checkArgument(!genre.isEmpty(), ErrorConstants.EMPTY_FIELD_GENRE);
+        this.genre = genre;
     }
 
     public String getAuthor() {
@@ -97,6 +104,8 @@ public class Book {
     }
 
     public void setAuthor(String author) {
+        Preconditions.checkNotNull(author, ErrorConstants.NULL_FIELD_AUTHOR);
+        checkArgument(!author.isEmpty(), ErrorConstants.EMPTY_FIELD_AUTHOR);
         this.author = author;
     }
 
@@ -105,6 +114,7 @@ public class Book {
     }
 
     public void setImage(String image) {
+        Preconditions.checkNotNull(image);
         this.image = image;
     }
 
@@ -113,6 +123,8 @@ public class Book {
     }
 
     public void setTitle(String title) {
+        Preconditions.checkNotNull(title, ErrorConstants.NULL_FIELD_TITLE);
+        checkArgument(!title.isEmpty(), ErrorConstants.EMPTY_FIELD_TITLE);
         this.title = title;
     }
 
@@ -121,6 +133,8 @@ public class Book {
     }
 
     public void setSubtitle(String subtitle) {
+        Preconditions.checkNotNull(subtitle, ErrorConstants.NULL_FIELD_SUBTITLE);
+        checkArgument(!subtitle.isEmpty(), ErrorConstants.EMPTY_FIELD_SUBTITLE);
         this.subtitle = subtitle;
     }
 
@@ -129,22 +143,28 @@ public class Book {
     }
 
     public void setPublisher(String publisher) {
+        Preconditions.checkNotNull(publisher, ErrorConstants.NULL_FIELD_PUBLISHER);
+        checkArgument(!publisher.isEmpty(), ErrorConstants.EMPTY_FIELD_PUBLISHER);
         this.publisher = publisher;
     }
 
     public String getYear() {
         return year;
     }
-
     public void setYear(String year) {
+        Preconditions.checkNotNull(year, ErrorConstants.NULL_FIELD_YEAR);
+        Preconditions.checkArgument(!year.isEmpty(), ErrorConstants.EMPTY_FIELD_YEAR);
+        Preconditions.checkArgument(StringUtils.isNumeric(year), ErrorConstants.NUMERIC_FIELD_YEAR);
         this.year = year;
     }
-
     public Integer getPages() {
         return pages;
     }
 
     public void setPages(Integer pages) {
+        Preconditions.checkNotNull(pages, ErrorConstants.NULL_FIELD_PAGES);
+        Preconditions.checkArgument(pages <= 0, ErrorConstants.EMPTY_FIELD_PAGES);
+
         this.pages = pages;
     }
 
@@ -153,14 +173,13 @@ public class Book {
     }
 
     public void setIsbn(String isbn) {
+        Preconditions.checkNotNull(isbn, ErrorConstants.NULL_FIELD_ISBN);
+        Preconditions.checkArgument(! isbn.isEmpty(), ErrorConstants.EMPTY_FIELD_ISBN);
+        Preconditions.checkArgument(StringUtils.isNumeric(isbn), ErrorConstants.NUMERIC_FIELD_ISBN);
         this.isbn = isbn;
     }
 
     public long getId() {
         return id;
-    }
-
-    public void setId(long id) {
-        this.id = id;
     }
 }
