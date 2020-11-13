@@ -77,6 +77,9 @@ public class Book {
     @ManyToMany(mappedBy = "books")
     private List <User> users = new ArrayList<>();
 
+    public Book() {
+        super();
+    }
     public Book(String genre, String author, String image, String title, String subtitle, String publisher, String year, Integer pages, String isbn) {
         this.genre = genre;
         this.author = author;
