@@ -2,6 +2,9 @@ package wolox.training.models;
 
 import static com.google.common.base.Preconditions.checkArgument;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
+import java.util.Collections;
 import org.apache.commons.lang3.StringUtils;
 import com.google.common.base.Preconditions;
 import com.sun.istack.NotNull;
@@ -25,6 +28,7 @@ import wolox.training.constants.ErrorConstants;
 @Entity
 @Table(name = "books")
 @ApiModel("Model Book")
+@JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class Book {
 
     @Id
@@ -77,6 +81,9 @@ public class Book {
     @ManyToMany(mappedBy = "books")
     private List <User> users = new ArrayList<>();
 
+    public Book() {
+        super();
+    }
     public Book(String genre, String author, String image, String title, String subtitle, String publisher, String year, Integer pages, String isbn) {
         this.genre = genre;
         this.author = author;
@@ -163,7 +170,7 @@ public class Book {
 
     public void setPages(Integer pages) {
         Preconditions.checkNotNull(pages, ErrorConstants.NULL_FIELD_PAGES);
-        Preconditions.checkArgument(pages <= 0, ErrorConstants.EMPTY_FIELD_PAGES);
+        Preconditions.checkArgument(pages  >=0 , ErrorConstants.EMPTY_FIELD_PAGES);
 
         this.pages = pages;
     }
@@ -181,5 +188,9 @@ public class Book {
 
     public long getId() {
         return id;
+    }
+
+    public List<User> getUsers() {
+        return (List<User>) Collections.unmodifiableList(users);
     }
 }
