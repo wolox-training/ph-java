@@ -56,6 +56,9 @@ public class User {
     public User() {
         this.books = new ArrayList<>();
     }
+    public User(String name) {
+        this.name = name;
+    }
 
     public long getId() {
         return id;
