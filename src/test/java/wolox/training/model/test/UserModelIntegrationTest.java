@@ -11,6 +11,7 @@ import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.exceptions.BookNotFoundException;
 import wolox.training.models.User;
@@ -50,5 +51,30 @@ public class UserModelIntegrationTest {
                 .thenReturn(pablo);
     }
 
+    @Test
+    @Rollback(false)
+    public void testUpdateUser() {
+        User user = userRepository.findByName("iPhone 10");
+        user.setName("Andres");
+
+        userRepository.save(user);
+
+        User updatedProduct = userRepository.findByName("iPhone 10");
+
+        assertThat(updatedProduct.getName()).isEqualTo("Pablo");
+    }
+
+    @Test
+    @Rollback(false)
+    public void testDeleteUser() {
+        User user = userRepository.findByName("pablo");
+
+        userRepository.deleteById(user.getId());
+
+        User deletedUser = userRepository.findByName("pablo");
+
+        assertThat(deletedUser).isNull();
+
+    }
 
 }
