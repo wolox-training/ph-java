@@ -21,6 +21,7 @@ dependencies {
 		compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
 		developmentOnly("org.springframework.boot:spring-boot-devtools")
 		compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+		compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.5.RELEASE'
 
 	}
 }
