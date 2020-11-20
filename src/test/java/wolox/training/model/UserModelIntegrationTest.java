@@ -1,4 +1,4 @@
-package wolox.training.model.test;
+package wolox.training.model;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 
@@ -54,12 +54,12 @@ public class UserModelIntegrationTest {
     @Test
     @Rollback(false)
     public void testUpdateUser() {
-        User user = userRepository.findByName("iPhone 10");
+        User user = userRepository.findByName("pablo");
         user.setName("Andres");
 
         userRepository.save(user);
 
-        User updatedProduct = userRepository.findByName("iPhone 10");
+        User updatedProduct = userRepository.findByName("pablo");
 
         assertThat(updatedProduct.getName()).isEqualTo("Pablo");
     }
