@@ -46,11 +46,11 @@ public class BookDTO {
                 .builder()
                 .isbn(isbn)
                 .title(objectMapper.convertValue(node.get(queryIsbn).get("title"), String.class))
-                .title(objectMapper.convertValue(node.get(queryIsbn).get("subTitle"), String.class))
-                .title(objectMapper.convertValue(node.get(queryIsbn).get("publishers"), String.class))
-                .title(objectMapper.convertValue(node.get(queryIsbn).get("year"), String.class))
-                .title(objectMapper.convertValue(node.get(queryIsbn).get("number_pages"), String.class))
-                .title(objectMapper.convertValue(node.get(queryIsbn).get("authors"), String.class))
+                .subTitle(objectMapper.convertValue(node.get(queryIsbn).get("subTitle"), String.class))
+                .publishers(objectMapper.convertValue(node.get(queryIsbn).get("publishers"), List.class))
+                .year(objectMapper.convertValue(node.get(queryIsbn).get("year"), String.class))
+                .numberPages(objectMapper.convertValue(node.get(queryIsbn).get("number_pages"), Integer.class))
+                .authors(objectMapper.convertValue(node.get(queryIsbn).get("authors"), List.class))
                 .build();
     }
 
