@@ -33,6 +33,7 @@ public class BookRepositoryTest {
 
     private static Book bookTest;
     private static List<Book> bookTests;
+    private static final String PARAM_NULL = " ";
 
     @BeforeAll
     static void setUp() {
@@ -67,14 +68,14 @@ public class BookRepositoryTest {
     @Test
     void whenCallfindByAllParametersWithSomeParametersEmptyThenRetunrAListBook() {
         bookRepository.save(bookTest);
-        Page<Book> books = bookRepository.findByAllParameters("", "", "", "", "", bookTest.getPublisher(), "20", "24", bookTest.getPages(), bookTest.getIsbn(), null);
+        Page<Book> books = bookRepository.findByAllParameters(PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, bookTest.getPublisher(), "20", "24", bookTest.getPages(), bookTest.getIsbn(), null);
         assertEquals(books.getContent().iterator().next().getAuthor(), bookTest.getAuthor());
     }
 
     @Test
     void whenCallfindByAllParametersWithAllParametersEmptyThenRetunrAListBook() {
         bookRepository.save(bookTest);
-        Page<Book> books = bookRepository.findByAllParameters("", "", "", "", "", "", "", "", 0, "", null);
+        Page<Book> books = bookRepository.findByAllParameters(PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, 0, PARAM_NULL, null);
         assertEquals(books.getContent().iterator().next().getAuthor(), bookTest.getAuthor());
     }
 
