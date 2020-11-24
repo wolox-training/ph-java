@@ -19,8 +19,10 @@ public class OpenLibraryService {
     @Value("${URL}")
     private String urlExternalOpenLibrary;
 
+    private static final String QUERY_ISBN = "ISBN:";
+
     public BookDTO bookInfo(String isbn){
-        final String queryIsbn = "ISBN:" + isbn;
+        String queryIsbn = QUERY_ISBN +isbn;
         URI uri = UriComponentsBuilder
                 .fromHttpUrl(urlExternalOpenLibrary)
                 .path("books")
