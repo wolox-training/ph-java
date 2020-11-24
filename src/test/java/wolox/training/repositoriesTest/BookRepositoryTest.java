@@ -78,4 +78,11 @@ public class BookRepositoryTest {
         assertEquals(books.getContent().iterator().next().getAuthor(), bookTest.getAuthor());
     }
 
+    @Test
+    void whenCallfindByPublisherAndGenreAndYearThenReturnListBook() {
+        bookRepository.save(bookTest);
+        List<Book> listBooks = bookRepository.findByPublisherAndGenreAndYear(bookTest.getPublisher(), bookTest.getGenre(), bookTest.getYear());
+        assertEquals(listBooks.iterator().next().getPublisher(), bookTest.getPublisher());
+    }
+
 }

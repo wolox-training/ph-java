@@ -2,8 +2,14 @@ package wolox.training.controllers;
 
 import io.swagger.annotations.Api;
 import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+import java.time.LocalDate;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -137,6 +143,28 @@ public class UserController {
                 ErrorConstants.NOT_EXIST_ID));
         user.removeBook(book);
         return userRepository.save(user);
+    }
+
+
+    /**
+     * Method to find users by Initial range, final range and  name
+     *
+     * @param initialDate param to find  by Initial birthdate day
+     * @param finalDate   param to find  by final birthdate day
+     * @param name      param to find by name
+     * @return return a user with specified parameters
+     */
+    @ApiOperation(value = "Method to allow find  users by  birthdate and name")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Authenticated user")
+    })
+    @GetMapping
+    public ResponseEntity<List<User>> findByBirthdateBetween(
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false, defaultValue = "") LocalDate initialDate,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false, defaultValue = "") LocalDate finalDate,
+            @RequestParam(required = false, defaultValue = "") String name) {
+        List<User> listUsers = userRepository.findByBirthdateDatesAndName(initialDate, finalDate, name);
+        return new ResponseEntity<>(listUsers, HttpStatus.OK);
     }
 
 }

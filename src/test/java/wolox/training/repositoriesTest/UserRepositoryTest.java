@@ -52,4 +52,13 @@ public class UserRepositoryTest {
         assertEquals(userTest.getName(), persistedUser.get().getName());
     }
 
+    @Test
+    void whenCallFindAllByBirthdayAndNameThenReturnListUser() {
+        LocalDate initialDate = LocalDate.of(1991, 02, 27);
+        LocalDate finalDate = LocalDate.of(2020, 11, 23);
+        userRepository.save(userTest);
+        List<User> listUsers = userRepository.findByBirthdateDatesAndName(initialDate, finalDate, userTest.getName());
+        assertEquals(listUsers.iterator().next().getBirthdate(), userTest.getBirthdate());
+    }
+
 }

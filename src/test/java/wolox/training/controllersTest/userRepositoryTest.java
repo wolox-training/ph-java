@@ -11,6 +11,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -21,6 +22,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -224,5 +226,21 @@ public class userRepositoryTest {
                 .content(json))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @WithMockUser(value = "pablo")
+    @Test
+    @DisplayName("test, find user by birthdate and name, it return status OK")
+    void whenFindUserBirthdateThenReturnStatusOK() throws Exception {
+        LocalDate initialDate = LocalDate.of(2015, 5, 13);
+        LocalDate finalDate = LocalDate.of(2019, 2, 22);
+
+        List<User> listUsers = new ArrayList<>(); {
+        };
+        given(userRepository.findByBirthdateDatesAndName(initialDate, finalDate, "pablo")).willReturn(listUsers);
+        String url = (PATH + "?initialDate=2015-05-13&finalDate=2019-02-22&name=pablo");
+        mvc.perform(get(url)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 }
