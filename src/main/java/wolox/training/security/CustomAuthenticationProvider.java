@@ -9,6 +9,7 @@ import org.springframework.security.core.Authentication;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
+import wolox.training.constants.ErrorConstants;
 import wolox.training.repositories.UserRepository;
 
 @Component
@@ -28,7 +29,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
         userRepository.findUserByUsername(name).filter(user -> passwordEncoder.matches(password, password))
-        .orElseThrow(()-> new BadCredentialsException("Incorrect Credential"));
+        .orElseThrow(()-> new BadCredentialsException(ErrorConstants.INCORRECT_CREDENTIAL));
       return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
     }
     @Override
