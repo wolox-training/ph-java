@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Optional;
 import org.junit.Test;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,9 +34,8 @@ import wolox.training.models.User;
 import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
 
-@RunWith(SpringRunner.class)
 @WebMvcTest(controllers = UserController.class)
-public class userRepositoryTest {
+public class userControllerTest {
 
     @Autowired
     private MockMvc mvc;
@@ -55,8 +55,12 @@ public class userRepositoryTest {
     private static List<User> userTests;
     private static List<Book> bookTests;
     private static final String PATH = "/api/users";
+    private static final String URL = (PATH + "/password/1");
+    private static final String URL_REMOVE = (PATH + "/1/remove-books/1");
+    private static final String URL_ADD = (PATH + "/1/add-books/1");
+    private static final String URL_PARAM = (PATH + "/1");
 
-    @BeforeAll
+    @BeforeEach
     static void setUp() {
         userTest = EntitiesTest.mockOneUser();
         userTests = EntitiesTest.mockManyUsers();
@@ -72,8 +76,7 @@ public class userRepositoryTest {
     @DisplayName("Test find all user ,return status OK")
     void whenFindUserByIdThenReturnStatusOK() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.of(userTest));
-        String url = (PATH + "/1");
-        mvc.perform(get(url)
+        mvc.perform(get(URL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.name").value(userTest.getName()));
@@ -84,8 +87,7 @@ public class userRepositoryTest {
     @DisplayName("Test,user is searched for its id,it return status not found")
     void whenUserThatNotExistsThenReturnNotFound() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.empty());
-        String url = (PATH + "/1");
-        mvc.perform(get(url)
+        mvc.perform(get(URL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNotFound());
     }
@@ -94,8 +96,7 @@ public class userRepositoryTest {
     @DisplayName("Test , user is created , it return status Created")
     void whenCreateUserThenReturnStatusCreated() throws Exception {
         String json = new ObjectMapper().writeValueAsString(userTest);
-        String url = PATH;
-        mvc.perform(post(url)
+        mvc.perform(post(PATH)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(json))
@@ -109,8 +110,7 @@ public class userRepositoryTest {
     void whenUpdateUserThenReturnStatusCreated() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.of(userTest));
         String json = new ObjectMapper().writeValueAsString(userTest);
-        String url = (PATH + "/1");
-        mvc.perform(put(url)
+        mvc.perform(put(URL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(json))
@@ -124,8 +124,7 @@ public class userRepositoryTest {
     void whenUpdateUserThenReturnStatusNoFound() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.empty());
         String json = new ObjectMapper().writeValueAsString(userTest);
-        String url = (PATH + "/1");
-        mvc.perform(put(url)
+        mvc.perform(put(URL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(json))
@@ -138,8 +137,7 @@ public class userRepositoryTest {
     @DisplayName("Test,  user is deleted , it return status No Content")
     void whenDeleteUserThenReturnStatusNoContent() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.of(userTest));
-        String url = (PATH + "/1");
-        mvc.perform(delete(url)
+        mvc.perform(delete(URL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNoContent());
@@ -150,8 +148,7 @@ public class userRepositoryTest {
     @DisplayName("Test, user is deleted , it return status No Found")
     void whenDeleteUserThenReturnStatusNoFound() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.empty());
-        String url = (PATH + "/1");
-        mvc.perform(delete(url)
+        mvc.perform(delete(URL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
@@ -163,8 +160,7 @@ public class userRepositoryTest {
     void whenAddBookThenReturnStatusCreated() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.of(userTest));
         given(bookRepository.findById(1L)).willReturn(Optional.of(bookTest));
-        String url = (PATH + "/1/add-books/1");
-        mvc.perform(patch(url)
+        mvc.perform(patch(URL_ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8"))
                 .andDo(print())
@@ -176,8 +172,7 @@ public class userRepositoryTest {
     @DisplayName("Test, book is added and its exists , it return status Conflict")
     void whenAddBookThenReturnStatusConflict() throws Exception {
         given(bookRepository.findById(1L)).willReturn(Optional.of(bookTest));
-        String url = (PATH + "/1/add-books/1");
-        mvc.perform(patch(url)
+        mvc.perform(patch(URL_ADD)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8"))
                 .andDo(print())
@@ -190,8 +185,7 @@ public class userRepositoryTest {
     void whenRemoveBookThenReturnStatusNoContent() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.of(secondUserTest));
         given(bookRepository.findById(1L)).willReturn(Optional.of(bookTest));
-        String url = (PATH + "/1/remove-books/1");
-        mvc.perform(patch(url)
+        mvc.perform(patch(URL_REMOVE)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isNoContent());
     }
@@ -202,8 +196,7 @@ public class userRepositoryTest {
     void whenPasswordIsUpdateThenReturnStatusOK() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.of(userTest));
         String json = new ObjectMapper().writeValueAsString(userTest);
-        String url = (PATH + "/password/1");
-        mvc.perform(put(url)
+        mvc.perform(put(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(json))
@@ -217,8 +210,7 @@ public class userRepositoryTest {
     void whenPasswordIsUpdateThenReturnStatusNoFound() throws Exception {
         given(userRepository.findById(1L)).willReturn(Optional.empty());
         String json = new ObjectMapper().writeValueAsString(userTest);
-        String url = (PATH + "/password/1");
-        mvc.perform(put(url)
+        mvc.perform(put(URL)
                 .contentType(MediaType.APPLICATION_JSON)
                 .characterEncoding("utf-8")
                 .content(json))
