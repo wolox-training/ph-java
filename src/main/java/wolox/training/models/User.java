@@ -19,6 +19,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import wolox.training.constants.ErrorConstants;
 import wolox.training.exceptions.BookAlreadyOwnedException;
 /**
@@ -46,6 +47,9 @@ public class User {
     @Column(nullable = false)
     @ApiModelProperty(notes ="The user's birthdate", required = true)
     private LocalDate birthdate;
+
+    @ApiModelProperty(notes = "User's password")
+    private String password;
 
     /**
      * Field for relation user-book
@@ -111,5 +115,13 @@ public class User {
         }else{
             books.remove(book);
         }
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password){
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 }

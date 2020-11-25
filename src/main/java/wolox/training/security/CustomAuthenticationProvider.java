@@ -28,7 +28,7 @@ public class CustomAuthenticationProvider implements AuthenticationProvider {
 
         String name = authentication.getName();
         String password = authentication.getCredentials().toString();
-        userRepository.findUserByUsername(name).filter(user -> passwordEncoder.matches(password, password))
+        userRepository.findUserByUsername(name).filter(user -> passwordEncoder.matches(password, user.getPassword()))
         .orElseThrow(()-> new BadCredentialsException(ErrorConstants.INCORRECT_CREDENTIAL));
       return new UsernamePasswordAuthenticationToken(name, password, new ArrayList<>());
     }

@@ -30,6 +30,14 @@ public interface BookRepository  extends JpaRepository<Book, Long> {
             String year);
 
     /**
+     * Method to  allow search a book by isbn paran
+     * @param isbn param to search book in external api
+     * @return
+     */
+     Optional<Book> findBookByIsbn(String isbn);
+
+
+    /**
      * Method to search book by some params of theses
      *
      * @param genre     variable to search object
