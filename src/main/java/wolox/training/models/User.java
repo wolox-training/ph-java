@@ -47,6 +47,9 @@ public class User {
     @ApiModelProperty(notes ="The user's birthdate", required = true)
     private LocalDate birthdate;
 
+    @ApiModelProperty(notes = "User's password")
+    private String password;
+
     /**
      * Field for relation user-book
      */
@@ -111,5 +114,9 @@ public class User {
         }else{
             books.remove(book);
         }
+    }
+
+    public String getPassword() {
+        return password;
     }
 }

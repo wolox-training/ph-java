@@ -7,6 +7,7 @@ import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.lang.NonNullApi;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -23,13 +24,18 @@ import org.springframework.web.bind.annotation.RestController;
 import wolox.training.constants.ErrorConstants;
 import wolox.training.exceptions.BookIdMismatchException;
 import wolox.training.exceptions.BookNotFoundException;
+import wolox.training.model.dto.BookDTO;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
+import wolox.training.service.OpenLibraryService;
 
 @RestController
 @RequestMapping("/api/books")
 @Api
 public class BookController {
+
+    @Autowired
+    private OpenLibraryService openLibraryService;
 
     /**
      * This method show a greeting on the browser
@@ -128,4 +134,27 @@ public class BookController {
                 ErrorConstants.NOT_EXIST_ID));
         return bookRepository.save(book);
     }
+
+    /**
+     * Method to  allow search a book by isbn paran
+     * @param isbn param to search book in external api
+     * @return
+     */
+    @ApiOperation(value = "Method to search a book by isbn", response = Book.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "The Book found in this present searching"),
+            @ApiResponse(code = 201, message = "The Book created"),
+            @ApiResponse(code = 404, message = "The Book not found")
+    })
+    @GetMapping("/findByIsbn")
+    public ResponseEntity<Book> findBookByIsbn(@RequestParam String isbn) {
+        return bookRepository.findBookByIsbn(isbn)
+                .map(book -> new ResponseEntity<>(book, HttpStatus.OK))
+                .orElseGet(() -> {
+                    BookDTO bookDTO = openLibraryService.bookInfo(isbn);
+                    Book book = bookRepository.save(bookDTO.setBook());
+                    return new ResponseEntity<>(book, HttpStatus.CREATED);
+                });
+    }
+
 }
