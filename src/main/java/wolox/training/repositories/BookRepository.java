@@ -16,6 +16,7 @@ public interface BookRepository  extends JpaRepository<Book, Long> {
 
      Optional<Book> findByTitle(String bookTitle);
 
+
      /**
      * This Method to allow find a book by publisher, genre and year
      *
@@ -24,16 +25,9 @@ public interface BookRepository  extends JpaRepository<Book, Long> {
      * @param year      param  to execute query
      * @return return a book with specified parameters
      */
-    @Query("SELECT a.publisher, a.genre, a.year from Book a "
-            + " WHERE (a.publisher = :publisher OR :publisher is null)"
-            + " AND (a.genre = :genre OR :genre is null)"
-            + " AND (a.year = :year OR :year is null)")
-    List<Book> findByPublisherAndGenreAndYear(
-            @Param("publisher") String publisher,
-            @Param("genre") String genre,
-            @Param("year") String year);
-
-
+    List<Book> findByPublisherAndGenreAndYear(String publisher,
+            String genre,
+            String year);
 
     /**
      * Method to search book by some params of theses

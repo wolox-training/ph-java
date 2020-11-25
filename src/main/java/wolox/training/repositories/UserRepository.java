@@ -38,12 +38,6 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param name      param to find by name
      * @return return a user with specified parameters
      */
-    @Query("SELECT a.name FROM User a"
-            + " WHERE ( a.birthdate >= :initialDate OR cast(:initialDate as date) is null)"
-            + " OR ( a.birthdate <= :finalDate OR cast(:finalDate as date) is null)"
-            + " OR (:name = '' OR UPPER(a.name) LIKE UPPER(:name))")
-    List<User> findByBirthdateDatesAndName(
-            @Param("initialDate") LocalDate initialDate,
-            @Param("finalDate") LocalDate finalDate,
-            @Param("name") String name);
+    List<User>findByBirthdateDatesAndName(LocalDate initialDate, LocalDate finalDate, String name);
+
 }

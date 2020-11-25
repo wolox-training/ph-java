@@ -127,28 +127,4 @@ public class BookController {
                 ErrorConstants.NOT_EXIST_ID));
         return bookRepository.save(book);
     }
-
-
-    /**
-     This Method to allow find a book by publisher, genre and year
-     *
-     * @param publisher param  to execute query
-     * @param genre     param  to execute query
-     * @param year      param  to execute query
-     * @return return a book with specified parameters
-     */
-    @ApiOperation(value = "Method to find a book by (publisher,genre and year)", response = Book.class)
-    @ApiResponses(value = {
-            @ApiResponse(code = 200, message = "Book found successfully"),
-            @ApiResponse(code = 404, message = "Book not found")
-    })
-    @GetMapping("/findByParams")
-    public List<Book> findByPublisherAndGenreAndYear(
-            @RequestParam(required = false) String publisher,
-            @RequestParam(required = false) String genre,
-            @RequestParam(required = false) String year) {
-
-        List<Book>listBook = bookRepository.findByPublisherAndGenreAndYear(publisher, genre, year);
-        return listBook;
-    }
 }

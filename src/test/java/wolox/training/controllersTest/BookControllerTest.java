@@ -172,17 +172,5 @@ public class BookControllerTest {
         assertEquals(bookTest, responseUser);
     }
 
-    @WithMockUser(value = "pablo")
-    @Test
-    @DisplayName("Test , When a book is seached by publisher , genre and year ,it return status OK")
-    void whenFindByPublisherGenreAndYearThenReturnStatusOK() throws Exception {
-        List<Book> listBooks = new ArrayList<>();
-        given(bookRepository.findByPublisherAndGenreAndYear(bookTest.getPublisher(), bookTest.getGenre(), bookTest.getYear())).withFailMessage(ErrorConstants.NOT_EXIST_ID);
-        String url = (PATH + "/findByParams?publisher=publisher&genre=genre&year=year");
-        mvc.perform(get(url)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-    }
-
 }
 
