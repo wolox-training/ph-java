@@ -65,18 +65,4 @@ public class BookRepositoryTest {
         assertEquals(book.get().getId(), secondTestBook.getId());
     }
 
-    @Test
-    void whenCallfindByAllParametersWithSomeParametersEmptyThenRetunrAListBook() {
-        bookRepository.save(bookTest);
-        Page<Book> books = bookRepository.findByAllParameters(PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, bookTest.getPublisher(), "20", "24", bookTest.getPages(), bookTest.getIsbn(), null);
-        assertEquals(books.getContent().iterator().next().getAuthor(), bookTest.getAuthor());
-    }
-
-    @Test
-    void whenCallfindByAllParametersWithAllParametersEmptyThenRetunrAListBook() {
-        bookRepository.save(bookTest);
-        Page<Book> books = bookRepository.findByAllParameters(PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, 0, PARAM_NULL, null);
-        assertEquals(books.getContent().iterator().next().getAuthor(), bookTest.getAuthor());
-    }
-
 }
