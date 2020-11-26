@@ -159,8 +159,11 @@ public class BookControllerTest {
     @Test
     @DisplayName("Test , When a book is seached by publisher , genre and year ,it return status OK")
     void whenFindByPublisherGenreAndYearThenReturnStatusOK() throws Exception {
-        List<Book> listBooks = new ArrayList<>();
-        given(bookRepository.findByPublisherAndGenreAndYearQuery(bookTest.getPublisher(), bookTest.getGenre(), bookTest.getYear())).withFailMessage(ErrorConstants.NOT_EXIST_ID);
+        Pageable pageable = PageRequest.of(1,3);
+        List<Book> books = new ArrayList<>();
+        books.add(bookTest);
+        Page<Book> bookPage = new PageImpl<>(books);
+        given(bookRepository.findByPublisherAndGenreAndYearQuery(bookTest.getPublisher(), bookTest.getGenre(), bookTest.getYear(), pageable)).withFailMessage(ErrorConstants.NOT_EXIST_ID);
         mvc.perform(get(URL_PARAMS_QUERY)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
@@ -170,10 +173,11 @@ public class BookControllerTest {
     @Test
     @DisplayName("Test , find info by different param ,it return status OK")
     void whenFindByAllParametersThenReturnStatusOK() throws Exception {
+        Pageable pageable = PageRequest.of(1,3);
         List<Book> books = new ArrayList<>();
         books.add(bookTest);
         Page<Book> bookPage = new PageImpl<>(books);
-        given(bookRepository.findByAllParameters("genre", "author", "image", "title", "subtitle", "publisher", "initialYear", "finalYear", 450, "2020")).withFailMessage(ErrorConstants.NOT_EXIST_ID);
+        given(bookRepository.findByAllParameters("genre", "author", "image", "title", "subtitle", "publisher", "initialYear", "finalYear", 450, "2020", pageable)).withFailMessage(ErrorConstants.NOT_EXIST_ID);
 
         ResultActions response = mvc.perform(get(URL_ALL_PARAMS)
                 .contentType(MediaType.APPLICATION_JSON))

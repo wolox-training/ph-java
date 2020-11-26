@@ -56,8 +56,9 @@ public class UserRepositoryTest {
     void whenCallFindAllByBirthdayAndNameThenReturnListUser() {
         LocalDate initialDate = LocalDate.of(1991, 02, 27);
         LocalDate finalDate = LocalDate.of(2020, 11, 23);
+        Pageable pageable = PageRequest.of(0,1);
         userRepository.save(userTest);
-        List<User> listUsers = userRepository.findByBirthdateDatesAndName(initialDate, finalDate, userTest.getName());
+        Page<User> listUsers = userRepository.findByBirthdateDatesAndName(initialDate, finalDate, userTest.getName(),pageable);
         assertEquals(listUsers.iterator().next().getBirthdate(), userTest.getBirthdate());
     }
 

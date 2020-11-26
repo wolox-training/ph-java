@@ -7,6 +7,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
 import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.entitiesTest.EntitiesTest;
 import wolox.training.models.Book;
@@ -67,22 +70,25 @@ public class BookRepositoryTest {
 
     @Test
     void whenCallfindByPublisherAndGenreAndYearThenReturnListBook() {
+        Pageable pageable = PageRequest.of(0,1, Sort.by("author"));
         bookRepository.save(bookTest);
-        List<Book> listBooks = bookRepository.findByPublisherAndGenreAndYear(bookTest.getPublisher(), bookTest.getGenre(), bookTest.getYear());
+        Page<Book> listBooks = bookRepository.findByPublisherAndGenreAndYear(bookTest.getPublisher(), bookTest.getGenre(), bookTest.getYear(), pageable);
         assertEquals(listBooks.iterator().next().getPublisher(), bookTest.getPublisher());
     }
 
     @Test
     void whenCallfindByAllParametersWithSomeParametersEmptyThenRetunrAListBook() {
+        Pageable pageable = PageRequest.of(0,1, Sort.by("author"));
         bookRepository.save(bookTest);
-        List<Book> books = bookRepository.findByAllParameters(PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, bookTest.getPublisher(), "20", "24", bookTest.getPages(), bookTest.getIsbn());
+        Page<Book> books = bookRepository.findByAllParameters(PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, bookTest.getPublisher(), "20", "24", bookTest.getPages(), bookTest.getIsbn(), pageable);
         assertEquals(books.iterator().next().getAuthor(), bookTest.getAuthor());
     }
 
     @Test
     void whenCallfindByAllParametersWithAllParametersEmptyThenRetunrAListBook() {
+        Pageable pageable = PageRequest.of(0,1, Sort.by("author"));
         bookRepository.save(bookTest);
-        List<Book> books = bookRepository.findByAllParameters(PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, 0, PARAM_NULL);
+        Page<Book> books = bookRepository.findByAllParameters(PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, PARAM_NULL, 0, PARAM_NULL, pageable);
         assertEquals(books.iterator().next().getAuthor(), bookTest.getAuthor());
     }
 
