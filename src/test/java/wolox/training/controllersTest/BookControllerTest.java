@@ -157,24 +157,6 @@ public class BookControllerTest {
 
     @WithMockUser(value = "pablo")
     @Test
-    @DisplayName("Test , find info by different param ,it return status OK")
-    void whenFindByAllParametersThenReturnStatusOK() throws Exception {
-        Pageable pageable = PageRequest.of(1, 4);
-        List<Book> books = new ArrayList<>();
-        books.add(bookTest);
-        Page<Book> bookPage = new PageImpl<>(books);
-        given(bookRepository.findByAllParameters("genre", "author", "image", "title", "subtitle", "publisher", "startYear", "endYear", 450, "2020", pageable)).withFailMessage(ErrorConstants.NOT_EXIST_ID);
-
-        ResultActions response = mvc.perform(get(URL_ALL_PARAMS)
-                .contentType(MediaType.APPLICATION_JSON))
-                .andExpect(status().isOk());
-
-        Book responseUser = mapper.readValue((JsonParser) response, Book.class);
-        assertEquals(bookTest, responseUser);
-    }
-
-    @WithMockUser(value = "pablo")
-    @Test
     @DisplayName("Test , When a book is seached by publisher , genre and year ,it return status OK")
     void whenFindByPublisherGenreAndYearThenReturnStatusOK() throws Exception {
         List<Book> listBooks = new ArrayList<>();
