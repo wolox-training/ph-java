@@ -3,6 +3,8 @@ package wolox.training.repositories;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.Optional;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
@@ -36,9 +38,10 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param initialDate param to find  by Initial birthdate day
      * @param finalDate   param to find  by final birthdate day
      * @param name      param to find by name
+     * @param pageable param to order and paging
      * @return return a user with specified parameters
      */
-    List<User>findByBirthdateDatesAndName(LocalDate initialDate, LocalDate finalDate, String name);
+    Page<User> findByBirthdateDatesAndName(LocalDate initialDate, LocalDate finalDate, String name, Pageable pageable);
 
     /**
      * Method to find users by Initial range, final range and  name
@@ -46,14 +49,16 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @param initialDate param to find  by Initial birthdate day
      * @param finalDate   param to find  by final birthdate day
      * @param name      param to find by name
+     * @param pageable param to order and paging
      * @return return a user with specified parameters
      */
     @Query("SELECT a.name FROM User a"
             + " WHERE ( a.birthdate >= :initialDate OR cast(:initialDate as date) is null)"
             + " OR ( a.birthdate <= :finalDate OR cast(:finalDate as date) is null)"
             + " OR (:name = '' OR UPPER(a.name) LIKE UPPER(:name))")
-    List<User> findByBirthdateDatesAndNameQuery(
+    Page<User> findByBirthdateDatesAndNameQuery(
             @Param("initialDate") LocalDate initialDate,
             @Param("finalDate") LocalDate finalDate,
-            @Param("name") String name);
+            @Param("name") String name,
+            Pageable pageable);
 }

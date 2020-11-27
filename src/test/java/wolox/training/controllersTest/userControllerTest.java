@@ -23,7 +23,10 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -227,10 +230,12 @@ public class userControllerTest {
     void whenFindUserBirthdateThenReturnStatusOK() throws Exception {
         LocalDate initialDate = LocalDate.of(2015, 5, 13);
         LocalDate finalDate = LocalDate.of(2019, 2, 22);
+        Pageable pageable = PageRequest.of(0,1);
+        List<User> listUSer = new ArrayList<>();
+        listUSer.add(userTest);
+        Page<User> listUsers = new PageImpl<>(listUSer);
 
-        List<User> listUsers = new ArrayList<>(); {
-        };
-        given(userRepository.findByBirthdateDatesAndName(initialDate, finalDate, "pablo")).willReturn(listUsers);
+        given(userRepository.findByBirthdateDatesAndName(initialDate, finalDate, "pablo", pageable)).willReturn(listUsers);
         mvc.perform(get(URL_ALL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());

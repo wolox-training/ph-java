@@ -23,11 +23,14 @@ public interface BookRepository  extends JpaRepository<Book, Long> {
      * @param publisher param  to execute query
      * @param genre     param  to execute query
      * @param year      param  to execute query
+     * @param pageable param to order and paging
      * @return return a book with specified parameters
      */
-    List<Book> findByPublisherAndGenreAndYear(String publisher,
+
+     Page<Book> findByPublisherAndGenreAndYear(String publisher,
             String genre,
-            String year);
+            String year,
+            Pageable pageable);
 
     /**
      * This Method to allow find a book by publisher, genre and year
@@ -35,16 +38,17 @@ public interface BookRepository  extends JpaRepository<Book, Long> {
      * @param publisher param  to execute query
      * @param genre     param  to execute query
      * @param year      param  to execute query
+     * @param pageable param to order and paging
      * @return return a book with specified parameters
      */
     @Query("SELECT a.publisher, a.genre, a.year from Book a "
             + " WHERE (a.publisher = :publisher OR :publisher is null)"
             + " AND (a.genre = :genre OR :genre is null)"
             + " AND (a.year = :year OR :year is null)")
-    List<Book> findByPublisherAndGenreAndYearQuery(
+    Page<Book> findByPublisherAndGenreAndYearQuery(
             @Param("publisher") String publisher,
             @Param("genre") String genre,
-            @Param("year") String year);
+            @Param("year") String year, Pageable pageable);
 
     /**
      * Method to  allow search a book by isbn paran
@@ -66,6 +70,7 @@ public interface BookRepository  extends JpaRepository<Book, Long> {
      * @param finalYear   param to find  finalYear in entity
      * @param pages     param to find  pages in entity
      * @param isbn      param to find isbn in entity
+     * @param pageable param to order and paging
      * @return return a book with specified parameters
      */
     @Query("SELECT b FROM Book b "
@@ -80,7 +85,7 @@ public interface BookRepository  extends JpaRepository<Book, Long> {
             + "       OR ( b.year >= :initialYear AND :finalYear = '') "
             + "       OR ( b.year <= :finalYear AND :initialYear = '')) "
             + "AND (b.pages = :pages  OR :pages = '' ) ")
-    List<Book> findByAllParameters(
+    Page<Book> findByAllParameters(
             @Param("genre") String genre,
             @Param("author") String author,
             @Param("image") String image,
@@ -90,7 +95,8 @@ public interface BookRepository  extends JpaRepository<Book, Long> {
             @Param("initialYear") String initialYear,
             @Param("finalYear") String finalYear,
             @Param("pages") int pages,
-            @Param("isbn") String isbn);
+            @Param("isbn") String isbn,
+            Pageable pageable);
 
 
 

@@ -8,6 +8,7 @@ import io.swagger.annotations.ApiResponses;
 
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -164,6 +165,7 @@ public class BookController {
      * @param publisher param  to execute query
      * @param genre     param  to execute query
      * @param year      param  to execute query
+      @param pageable param to order and paging
      * @return return a book with specified parameters
      */
     @ApiOperation(value = "Method to find a book by (publisher,genre and year)", response = Book.class)
@@ -172,12 +174,13 @@ public class BookController {
             @ApiResponse(code = 404, message = "Book not found")
     })
     @GetMapping("/findByParams")
-    public List<Book> findByPublisherAndGenreAndYear(
+    public Page<Book> findByPublisherAndGenreAndYear(
             @RequestParam(required = false) String publisher,
             @RequestParam(required = false) String genre,
-            @RequestParam(required = false) String year) {
+            @RequestParam(required = false) String year,
+            Pageable pageable) {
 
-        List<Book>listBook = bookRepository.findByPublisherAndGenreAndYearQuery(publisher, genre, year);
+        Page<Book>listBook = bookRepository.findByPublisherAndGenreAndYearQuery(publisher, genre, year, pageable);
         return listBook;
     }
 
@@ -202,7 +205,7 @@ public class BookController {
             @ApiResponse(code = 404, message = "Book not found")
     })
     @GetMapping
-    public ResponseEntity<List<Book>> findByParameters(
+    public ResponseEntity<Page<Book>> findByParameters(
             @RequestParam(required = false, defaultValue = "") String genre,
             @RequestParam(required = false, defaultValue = "") String author,
             @RequestParam(required = false, defaultValue = "") String image,
@@ -214,8 +217,8 @@ public class BookController {
             @RequestParam(required = false, defaultValue = "") int pages,
             @RequestParam(required = false, defaultValue = "") String isbn,
             Pageable pageable) {
-        List<Book> books = bookRepository
-                .findByAllParameters(genre, author, image, title, subtitle, publisher, initialYear, finalYear, pages, isbn);
+        Page<Book> books = bookRepository
+                .findByAllParameters(genre, author, image, title, subtitle, publisher, initialYear, finalYear, pages, isbn, pageable);
         return new ResponseEntity<>(books, HttpStatus.OK);
     }
 
