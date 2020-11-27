@@ -27,11 +27,18 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter {
     protected void configure(final HttpSecurity http) throws Exception {
         http
                 //HTTP Basic authentication
-                .httpBasic().and()
+                /*.httpBasic().and()
                 .authorizeRequests()
                 .antMatchers(HttpMethod.POST, "/api/book").permitAll()
                 .antMatchers(HttpMethod.POST, "/api/user").permitAll()
                 .anyRequest().authenticated().and()
+                .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);*/
+
+                .httpBasic().and()
+                .authorizeRequests()
+                .antMatchers(HttpMethod.POST, "/api/books").permitAll()
+                .antMatchers(HttpMethod.POST, "/api/user").permitAll()
+                .anyRequest().authenticated().and().csrf().disable()
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
     }
 
