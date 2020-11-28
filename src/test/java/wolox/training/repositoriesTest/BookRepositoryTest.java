@@ -1,39 +1,29 @@
 package wolox.training.repositoriesTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
-import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.autoconfigure.orm.jpa.TestEntityManager;
-import org.springframework.data.domain.Page;
-import org.springframework.test.context.junit4.SpringRunner;
 import wolox.training.entitiesTest.EntitiesTest;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
 
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@RunWith(SpringRunner.class)
 @DataJpaTest
-public class BookRepositoryTest {
-    @Autowired
-    private BookRepository bookRepository;
+class BookRepositoryTest {
 
-    @Autowired
-    private TestEntityManager entityManager;
-
-
+    private static final String PARAM_NULL = " ";
     private static Book secondTestBook;
-
-
     private static Book bookTest;
     private static List<Book> bookTests;
-    private static final String PARAM_NULL = " ";
+    @Autowired
+    private BookRepository bookRepository;
+    @Autowired
+    private TestEntityManager entityManager;
 
     @BeforeAll
     static void setUp() {
