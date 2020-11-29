@@ -145,4 +145,26 @@ public class UserController {
         return userRepository.save(user);
     }
 
+    /**
+     * Method to find users by Initial range, final range and  name
+     *
+     * @param initialDate param to find  by Initial birthdate day
+     * @param finalDate   param to find  by final birthdate day
+     * @param name      param to find by name
+     * @return return a user with specified parameters
+     */
+    @ApiOperation(value = "Method to allow find  users by  birthdate and name")
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Authenticated user")
+    })
+    @GetMapping
+    public ResponseEntity<List<User>> findByBirthdateBetween(
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false, defaultValue = "") LocalDate initialDate,
+            @DateTimeFormat(iso = DateTimeFormat.ISO.DATE) @RequestParam(required = false, defaultValue = "") LocalDate finalDate,
+            @RequestParam(required = false, defaultValue = "") String name) {
+        List<User> listUsers = userRepository.findByBirthdateDatesAndNameQuery(initialDate, finalDate, name);
+        return new ResponseEntity<>(listUsers, HttpStatus.OK);
+    }
+
+
 }

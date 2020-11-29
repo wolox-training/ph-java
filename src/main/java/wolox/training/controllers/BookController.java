@@ -5,6 +5,7 @@ import io.swagger.annotations.ApiOperation;
 import io.swagger.annotations.ApiParam;
 import io.swagger.annotations.ApiResponse;
 import io.swagger.annotations.ApiResponses;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -154,5 +155,29 @@ public class BookController {
                     return new ResponseEntity<>(book, HttpStatus.CREATED);
                 });
     }
+
+    /**
+     This Method to allow find a book by publisher, genre and year
+     *
+     * @param publisher param  to execute query
+     * @param genre     param  to execute query
+     * @param year      param  to execute query
+     * @return return a book with specified parameters
+     */
+    @ApiOperation(value = "Method to find a book by (publisher,genre and year)", response = Book.class)
+    @ApiResponses(value = {
+            @ApiResponse(code = 200, message = "Book found successfully"),
+            @ApiResponse(code = 404, message = "Book not found")
+    })
+    @GetMapping("/findByParams")
+    public List<Book> findByPublisherAndGenreAndYear(
+            @RequestParam(required = false) String publisher,
+            @RequestParam(required = false) String genre,
+            @RequestParam(required = false) String year) {
+
+        List<Book>listBook = bookRepository.findByPublisherAndGenreAndYearQuery(publisher, genre, year);
+        return listBook;
+    }
+
 
 }

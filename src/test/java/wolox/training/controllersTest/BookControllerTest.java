@@ -58,6 +58,7 @@ public class BookControllerTest {
     private final ObjectMapper mapper = new ObjectMapper();
     private static final String URL_PARAM = (PATH + "/1");
     private static final String URL_ALL_PARAMS = (PATH + "?genre=genre&author=author&image=image&title=title&subtitle=subtitle&publisher=publisher&startYear=10&endYear=2019&pages=22&isbn=22&page=1&size=4");
+    private static final String URL_PARAMS_QUERY = (PATH + "/findByParams?publisher=publisher&genre=genre&year=year");
 
 
     @BeforeEach
@@ -152,6 +153,17 @@ public class BookControllerTest {
                 .contentType(MediaType.APPLICATION_JSON))
                 .andDo(print())
                 .andExpect(status().isNotFound());
+    }
+
+    @WithMockUser(value = "pablo")
+    @Test
+    @DisplayName("Test , When a book is seached by publisher , genre and year ,it return status OK")
+    void whenFindByPublisherGenreAndYearThenReturnStatusOK() throws Exception {
+        List<Book> listBooks = new ArrayList<>();
+        given(bookRepository.findByPublisherAndGenreAndYearQuery(bookTest.getPublisher(), bookTest.getGenre(), bookTest.getYear())).withFailMessage(ErrorConstants.NOT_EXIST_ID);
+        mvc.perform(get(URL_PARAMS_QUERY)
+                .contentType(MediaType.APPLICATION_JSON))
+                .andExpect(status().isOk());
     }
 
 }
