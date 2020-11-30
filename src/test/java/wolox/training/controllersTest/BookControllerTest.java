@@ -2,20 +2,27 @@ package wolox.training.controllersTest;
 
 
 import static org.assertj.core.api.BDDAssumptions.given;
+import static org.junit.Assert.assertEquals;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
+import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import java.util.List;
-
-import org.junit.jupiter.api.BeforeAll;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.mockito.BDDMockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
-import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.ResultActions;
 import wolox.training.constants.ErrorConstants;
@@ -23,45 +30,27 @@ import wolox.training.controllers.BookController;
 import wolox.training.entitiesTest.EntitiesTest;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
-
-
-import com.fasterxml.jackson.databind.ObjectMapper;
-
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-
-import static org.junit.Assert.assertEquals;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
-
-import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
+import wolox.training.services.AuthService;
 
 @WebMvcTest(controllers = BookController.class)
 public class BookControllerTest {
 
-    @Autowired
-    private MockMvc mvc;
-
-    @MockBean
-    private BookRepository bookRepository;
-
+    private static final String PATH = "/api/books";
+    private static final String URL_PARAM = (PATH + "/1");
+    private static final String URL_ALL_PARAMS = (PATH
+            + "?genre=genre&author=author&image=image&title=title&subtitle=subtitle&publisher=publisher&startYear=10&endYear=2019&pages=22&isbn=22&page=1&size=4");
     private static Book bookTest;
     private static List<Book> bookTests;
-    private static final String PATH = "/api/books";
     private final ObjectMapper mapper = new ObjectMapper();
-    private static final String URL_PARAM = (PATH + "/1");
-    private static final String URL_ALL_PARAMS = (PATH + "?genre=genre&author=author&image=image&title=title&subtitle=subtitle&publisher=publisher&startYear=10&endYear=2019&pages=22&isbn=22&page=1&size=4");
-
+    @Autowired
+    private MockMvc mvc;
+    @MockBean
+    private BookRepository bookRepository;
+    @MockBean
+    private AuthService authService;
 
     @BeforeEach
-    static void setUp() {
+    public void setUp() {
         bookTests = EntitiesTest.mockManyBooks();
         bookTest = EntitiesTest.mockBook();
 
@@ -71,7 +60,7 @@ public class BookControllerTest {
     @Test
     @DisplayName("Test find all book ,return status OK")
     void whenFindBookByIdThenReturnStatusOK() throws Exception {
-        given(bookRepository.findById(1L)).withFailMessage(ErrorConstants.SUCCESS_CORRECT);
+        BDDMockito.given(bookRepository.findById(1L)).willReturn(Optional.of(bookTest));
         mvc.perform(get(URL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON))
                 .andExpect(status().isOk());
