@@ -41,11 +41,12 @@ public class UserControllerTest {
     private static final String URL_REMOVE = (PATH + "/1/remove-books/1");
     private static final String URL_ADD = (PATH + "/1/add-books/1");
     private static final String URL_PARAM = (PATH + "/1");
+    private static final String URL_ALL_PARAM = (PATH
+            + "?initialDate=2015-05-13&finalDate=2019-02-22&name=pablo");
     private static User userTest;
     private static User secondUserTest;
     private static Book bookTest;
     private static List<User> userTests;
-
     @Autowired
     private MockMvc mvc;
 
