@@ -1,9 +1,13 @@
 package wolox.training.controllersTest;
 
 import static org.mockito.BDDMockito.given;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.put;
 import static org.springframework.test.web.servlet.result.MockMvcResultHandlers.print;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
@@ -15,11 +19,10 @@ import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
-import org.junit.Test;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
-import org.junit.runner.RunWith;
+import org.junit.jupiter.api.Test;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
@@ -40,8 +43,19 @@ import wolox.training.repositories.BookRepository;
 import wolox.training.repositories.UserRepository;
 
 @WebMvcTest(controllers = UserController.class)
-public class userControllerTest {
+public class UserControllerTest {
 
+    private static final String PATH = "/api/user";
+    private static final String URL = (PATH + "/password/1");
+    private static final String URL_REMOVE = (PATH + "/1/remove-books/1");
+    private static final String URL_ADD = (PATH + "/1/add-books/1");
+    private static final String URL_PARAM = (PATH + "/1");
+    private static final String URL_ALL_PARAM = (PATH
+            + "?initialDate=2015-05-13&finalDate=2019-02-22&name=pablo");
+    private static User userTest;
+    private static User secondUserTest;
+    private static Book bookTest;
+    private static List<User> userTests;
     @Autowired
     private MockMvc mvc;
 
@@ -54,26 +68,16 @@ public class userControllerTest {
     @MockBean
     private PasswordEncoder passwordEncoder;
 
-    private static User userTest;
-    private static User secondUserTest;
-    private static Book bookTest;
-    private static List<User> userTests;
+
     private static List<Book> bookTests;
-    private static final String PATH = "/api/users";
-    private static final String URL = (PATH + "/password/1");
-    private static final String URL_REMOVE = (PATH + "/1/remove-books/1");
-    private static final String URL_ADD = (PATH + "/1/add-books/1");
-    private static final String URL_PARAM = (PATH + "/1");
-    private static final String URL_ALL_PARAM = (PATH + "?initialDate=2015-05-13&finalDate=2019-02-22&name=pablo");
 
     @BeforeEach
-    static void setUp() {
+    public void setUp() {
         userTest = EntitiesTest.mockOneUser();
         userTests = EntitiesTest.mockManyUsers();
         bookTest = EntitiesTest.mockBook();
         secondUserTest = EntitiesTest.mockSecondUser();
-        bookTests = new ArrayList<>();
-        bookTests.add(bookTest);
+
     }
 
 
@@ -114,7 +118,8 @@ public class userControllerTest {
     @Test
     @DisplayName("Test, user is updated , it return status OK")
     void whenUpdateUserThenReturnStatusCreated() throws Exception {
-        given(userRepository.findById(1L)).willReturn(Optional.of(userTest));
+        given(userRepository.findById(Mockito.any())).willReturn(Optional.of(userTest));
+        given(userRepository.save(Mockito.any())).willReturn((userTest));
         String json = new ObjectMapper().writeValueAsString(userTest);
         mvc.perform(put(URL_PARAM)
                 .contentType(MediaType.APPLICATION_JSON)

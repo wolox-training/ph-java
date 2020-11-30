@@ -1,5 +1,9 @@
 package wolox.training.repositoriesTest;
 
+import static org.junit.jupiter.api.Assertions.assertEquals;
+
+import java.util.List;
+import java.util.Optional;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -15,28 +19,18 @@ import wolox.training.entitiesTest.EntitiesTest;
 import wolox.training.models.Book;
 import wolox.training.repositories.BookRepository;
 
-
-import java.util.List;
-import java.util.Optional;
-
-import static org.junit.jupiter.api.Assertions.assertEquals;
-
-@RunWith(SpringRunner.class)
 @DataJpaTest
-public class BookRepositoryTest {
+class BookRepositoryTest {
+
+    private static final String PARAM_NULL = " ";
+    private static Book secondTestBook;
+    private static Book bookTest;
+    private static List<Book> bookTests;
     @Autowired
     private BookRepository bookRepository;
 
     @Autowired
     private TestEntityManager entityManager;
-
-
-    private static Book secondTestBook;
-
-
-    private static Book bookTest;
-    private static List<Book> bookTests;
-    private static final String PARAM_NULL = " ";
 
     @BeforeAll
     static void setUp() {

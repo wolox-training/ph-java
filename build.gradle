@@ -1,7 +1,7 @@
 plugins {
-	id 'org.springframework.boot' version '2.3.5.RELEASE'
-	id 'io.spring.dependency-management' version '1.0.10.RELEASE'
-	id 'java'
+    id 'org.springframework.boot' version '2.3.5.RELEASE'
+    id 'io.spring.dependency-management' version '1.0.10.RELEASE'
+    id 'java'
 }
 
 group = 'wolox'
@@ -9,41 +9,41 @@ version = '0.0.1-SNAPSHOT'
 sourceCompatibility = '1.8'
 
 repositories {
-	mavenCentral()
+    mavenCentral()
 }
 
 dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter'
-	testImplementation('org.springframework.boot:spring-boot-starter-test') {
-		exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-		compile('org.springframework.boot:spring-boot-starter-data-jpa')
-		compile('org.springframework.boot:spring-boot-starter-web')
-		compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
-		developmentOnly("org.springframework.boot:spring-boot-devtools")
-		compile('org.springframework.boot:spring-boot-starter-thymeleaf')
-		compile group: 'org.springframework.boot', name: 'spring-boot-starter-security', version: '2.3.5.RELEASE'
+    implementation 'org.springframework.boot:spring-boot-starter'
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile('org.springframework.boot:spring-boot-starter-data-jpa')
+    compile('org.springframework.boot:spring-boot-starter-web')
+    compile group: 'org.postgresql', name: 'postgresql', version: '42.2.5'
+    developmentOnly("org.springframework.boot:spring-boot-devtools")
+    compile('org.springframework.boot:spring-boot-starter-thymeleaf')
+    compile group: 'org.springframework.boot', name: 'spring-boot-starter-security'
 
-		compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
-		compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
-		compile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
-		compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
-		compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
-		compile 'org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE'
-		testImplementation('org.springframework.security:spring-security-test')
-		testImplementation 'com.h2database:h2:1.4.200'
-		testCompile('junit:junit:4.12')
-		testCompile('com.github.tomakehurst:wiremock:2.27.2')
-		testImplementation('org.springframework.boot:spring-boot-starter-test') {
-			exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
-		}
-		compile('org.springframework.boot:spring-boot-starter-validation')
-
-		compileOnly('org.projectlombok:lombok:1.18.16')
-		annotationProcessor('org.projectlombok:lombok:1.18.16')
-		testCompileOnly('org.projectlombok:lombok:1.18.16')
-		testAnnotationProcessor('org.projectlombok:lombok:1.18.16')
-		compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
-	}
+    compile group: 'io.springfox', name: 'springfox-swagger2', version: '2.9.2'
+    compile group: 'io.springfox', name: 'springfox-swagger-ui', version: '2.9.2'
+    compile 'org.springframework.plugin:spring-plugin-core:1.2.0.RELEASE'
+    compile group: 'com.google.guava', name: 'guava', version: '27.0-jre'
+    compile group: 'org.apache.commons', name: 'commons-lang3', version: '3.0'
+    compile 'org.springframework.boot:spring-boot-starter-test:2.2.6.RELEASE'
+    testImplementation('org.springframework.security:spring-security-test')
+    testImplementation 'com.h2database:h2:1.4.200'
+    testCompile('junit:junit:4.12')
+    testCompile('com.github.tomakehurst:wiremock:2.27.2')
+    testImplementation('org.springframework.boot:spring-boot-starter-test') {
+        exclude group: 'org.junit.vintage', module: 'junit-vintage-engine'
+    }
+    compile('org.springframework.boot:spring-boot-starter-validation')
+    
+    compileOnly('org.projectlombok:lombok:1.18.16')
+    annotationProcessor('org.projectlombok:lombok:1.18.16')
+    testCompileOnly('org.projectlombok:lombok:1.18.16')
+    testAnnotationProcessor('org.projectlombok:lombok:1.18.16')
+    compile group: 'org.projectlombok', name: 'lombok', version: '1.16.18'
 }
 
 test {
