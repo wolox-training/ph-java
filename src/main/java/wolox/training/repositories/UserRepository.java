@@ -1,7 +1,11 @@
 package wolox.training.repositories;
 
+import java.time.LocalDate;
+import java.util.List;
 import java.util.Optional;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 import wolox.training.models.User;
 
@@ -25,4 +29,15 @@ public interface UserRepository extends JpaRepository<User, Long> {
      * @return
      */
     User findByName(String name);
+
+    /**
+     * Method to find users by Initial range, final range and  name
+     *
+     * @param initialDate param to find  by Initial birthdate day
+     * @param finalDate   param to find  by final birthdate day
+     * @param name      param to find by name
+     * @return return a user with specified parameters
+     */
+    List<User>findByBirthdateDatesAndName(LocalDate initialDate, LocalDate finalDate, String name);
+
 }
