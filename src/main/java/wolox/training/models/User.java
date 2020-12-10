@@ -19,8 +19,10 @@ import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 import javax.persistence.SequenceGenerator;
 import javax.persistence.Table;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import wolox.training.constants.ErrorConstants;
 import wolox.training.exceptions.BookAlreadyOwnedException;
+
 /**
  * Entity  for table User
  */
@@ -29,23 +31,28 @@ import wolox.training.exceptions.BookAlreadyOwnedException;
 @ApiModel("Model User")
 @JsonIdentityInfo(generator = ObjectIdGenerators.PropertyGenerator.class, property = "id")
 public class User {
+
     @Id
     @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "USER_SEQ")
-    @SequenceGenerator(name = "USER_SEQ", sequenceName ="USER_SEQ")
-    @ApiModelProperty(notes ="The user id")
+    @SequenceGenerator(name = "USER_SEQ", sequenceName = "USER_SEQ")
+    @ApiModelProperty(notes = "The user id")
     private long id;
     @NotNull
     @Column(nullable = false)
-    @ApiModelProperty(notes ="The user's username", required = true)
+    @ApiModelProperty(notes = "The user's username", required = true)
     private String username;
     @NotNull
     @Column(nullable = false)
-    @ApiModelProperty(notes ="The user's name", required = true)
+    @ApiModelProperty(notes = "The user's name", required = true)
     private String name;
     @NotNull
     @Column(nullable = false)
-    @ApiModelProperty(notes ="The user's birthdate", required = true)
+    @ApiModelProperty(notes = "The user's birthdate", required = true)
     private LocalDate birthdate;
+    @NotNull
+    @Column(nullable = false)
+    @ApiModelProperty(notes = "User's password")
+    private String password;
 
     /**
      * Field for relation user-book
@@ -56,6 +63,7 @@ public class User {
     public User() {
         this.books = new ArrayList<>();
     }
+
     public User(String name) {
         this.name = name;
     }
@@ -90,7 +98,8 @@ public class User {
 
     public void setBirthdate(LocalDate birthdate) {
         Preconditions.checkNotNull(birthdate, ErrorConstants.NULL_FIELD_BIRTHDAY);
-        Preconditions.checkArgument(!birthdate.isAfter(LocalDate.now()),ErrorConstants.NOW_FIELD_BIRTHDAY);
+        Preconditions.checkArgument(!birthdate.isAfter(LocalDate.now()),
+                ErrorConstants.NOW_FIELD_BIRTHDAY);
         this.birthdate = birthdate;
     }
 
@@ -106,10 +115,18 @@ public class User {
     }
 
     public void removeBook(Book book) {
-        if(!books.contains(book)){
+        if (!books.contains(book)) {
             throw new BookAlreadyOwnedException(ErrorConstants.NOT_EXIST_BOOK_DELETE);
-        }else{
+        } else {
             books.remove(book);
         }
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = new BCryptPasswordEncoder().encode(password);
     }
 }
